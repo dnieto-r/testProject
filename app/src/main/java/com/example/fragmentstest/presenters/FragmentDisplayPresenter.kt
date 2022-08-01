@@ -10,8 +10,7 @@ import com.example.fragmentstest.views.FragmentDisplayView
 class FragmentDisplayPresenter(
     var displayView: FragmentDisplayView?,
     private val editUserUseCase: EditUserUseCase,
-    private val removeUserUseCase: RemoveUserUseCase,
-    val myStorage: Storage
+    private val removeUserUseCase: RemoveUserUseCase
 ) {
 
     fun editUser(user: User, position: Int) {
@@ -20,9 +19,9 @@ class FragmentDisplayPresenter(
         displayView?.onEditUser()
     }
 
-    fun removeUser(position: Int) {
-        Log.d("INFO", "Eliminando el usuario en la posición $position...")
-        removeUserUseCase.removeUser(position)
+    fun removeUser(user: User) {
+        Log.d("INFO", "Eliminando el usuario $user...")
+        removeUserUseCase.removeUser(user)
         displayView?.onDeleteUser()
     }
 

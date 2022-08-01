@@ -7,7 +7,7 @@ import com.example.fragmentstest.models.User
 class EditUserUseCase(val myStorage: Storage) : EditUserUseCase {
 
     override fun editUser(position: Int, user: User) {
-        myStorage.editUser(position, user)
+        myStorage.editUser(user)
     }
 
 }

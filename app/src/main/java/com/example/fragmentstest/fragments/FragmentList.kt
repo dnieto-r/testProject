@@ -26,15 +26,13 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class FragmentList : Fragment(), FragmentListView {
     private val customAdapter by lazy { CustomAdapter(::onSelectUser) }
 
-    private lateinit var myStorage: Storage
-    lateinit var presenter: FragmentListPresenter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        myStorage = (this.context?.applicationContext as MyApplication).myDatabase
-        presenter = FragmentListPresenter(
+    private val myStorage: Storage by lazy {
+        (this.context?.applicationContext as MyApplication).myDatabase
+    }
+    private val presenter: FragmentListPresenter by lazy {
+        FragmentListPresenter(
             this, (activity as MainActivity),
-            SearchUsersUseCase(myStorage), myStorage
+            SearchUsersUseCase(myStorage)
         )
     }
 
@@ -52,7 +50,8 @@ class FragmentList : Fragment(), FragmentListView {
     }
 
     override fun setupList() {
-        customAdapter.usersList = myStorage.getUsers()
+        if (myStorage.getUsers() != null)
+            customAdapter.usersList = myStorage!!.getUsers()
 
         rv_users.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -89,7 +88,6 @@ class FragmentList : Fragment(), FragmentListView {
         })
     }
 
-    // Dudo si esta función y la siguiente deberían delegar en el presentador
     override fun displayFoundContacts(users: List<User>) {
         customAdapter.usersList = users
         customAdapter.selectedRow = -1
@@ -102,7 +100,7 @@ class FragmentList : Fragment(), FragmentListView {
             0, 0,
             R.drawable.ic_search, 0
         );
-        customAdapter.usersList = myStorage.getUsers()
+        reloadUsers()
         (activity as MainActivity).onDeleteSearch()
     }
 
@@ -112,15 +110,19 @@ class FragmentList : Fragment(), FragmentListView {
 
     fun onDeleteUser() {
         customAdapter.selectedRow = -1
-        customAdapter.usersList = myStorage.getUsers()
+        reloadUsers()
     }
 
     fun onCreateUser() {
-        customAdapter.usersList = myStorage.getUsers()
+        reloadUsers()
     }
 
     fun onEditUser() {
-        customAdapter.usersList = myStorage.getUsers()
+        reloadUsers()
     }
 
+    private fun reloadUsers() {
+        if (myStorage.getUsers() != null)
+            customAdapter.usersList = myStorage!!.getUsers()
+    }
 }

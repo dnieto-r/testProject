@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
 import com.example.fragmentstest.dialogs.EditTextDialog
-import com.example.fragmentstest.interfaces.Storage
 import kotlinx.android.synthetic.main.fragment_blank.*
 
 class FragmentBlank : Fragment() {

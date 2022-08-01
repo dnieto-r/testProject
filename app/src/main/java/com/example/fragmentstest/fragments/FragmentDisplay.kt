@@ -48,7 +48,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         myStorage = (this.context?.applicationContext as MyApplication).myDatabase
         presenter = FragmentDisplayPresenter(
             this, EditUserUseCase(myStorage),
-            RemoveUserUserCase(myStorage), myStorage
+            RemoveUserUserCase(myStorage)
         )
     }
 
@@ -116,7 +116,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
                     .setMessage(R.string.delete_contact_conf)
                     .setPositiveButton(R.string.yes,
                         DialogInterface.OnClickListener { dialog, which ->
-                            presenter.removeUser(position)
+                            presenter.removeUser(user)
                         })
                     .setNegativeButton(R.string.no, null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
