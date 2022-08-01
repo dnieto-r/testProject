@@ -1,36 +1,20 @@
-package com.example.app.models
+package com.example.fragmentstest.models
 
 import androidx.recyclerview.widget.DiffUtil
 
-class MyDiffUtil (
+class MyDiffUtil(
     private val oldList: List<User>,
-    private val newList: List<User>): DiffUtil.Callback() {
+    private val newList: List<User>
+) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return when {
-            oldList[oldItemPosition].id != newList[newItemPosition].id -> {
-                false
-            }
-            oldList[oldItemPosition].name != newList[newItemPosition].name -> {
-                false
-            }
-            oldList[oldItemPosition].number != newList[newItemPosition].number -> {
-                false
-            }
-            oldList[oldItemPosition].photo != newList[newItemPosition].photo -> {
-                false
-            }
-            oldList[oldItemPosition].isFavorite != newList[newItemPosition].isFavorite -> {
-                false
-            }
-            else -> true
-        }
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

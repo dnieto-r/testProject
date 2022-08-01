@@ -2,4 +2,15 @@
     <string name="app_name">Fragments Test</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create">CREAR</string>
+    <string name="cancel">CANCELAR</string>
+    <string name="error_creating_user">Error: Has dejado algún campo en blanco</string>
+    <string name="leave_fav">Quitar de favoritos</string>
+    <string name="add_fav">Añadir a favoritos</string>
+    <string name="delete_contact">Eliminar contacto</string>
+    <string name="delete_contact_conf">¿Estas seguro de querer eliminar este contacto?</string>
+    <string name="yes">SI</string>
+    <string name="no">NO</string>
+    <string name="preference_file_key">contactsApp</string>
+    <string name="perms_granted">Ya se han aceptado los permisos</string>
 </resources>

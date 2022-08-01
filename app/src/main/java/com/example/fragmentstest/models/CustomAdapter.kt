@@ -1,26 +1,23 @@
-package com.example.app.models
+package com.example.fragmentstest.models
 
 import android.graphics.Color
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmentstest.R
-import com.example.fragmentstest.interfaces.IPassData
 import kotlin.properties.Delegates
 
-class CustomAdapter(private val passData: IPassData
-): RecyclerView.Adapter<MyViewHolder>() {
+class CustomAdapter(
+    val selectUser: ((user: User, position: Int) -> Unit)
+) : RecyclerView.Adapter<MyViewHolder>() {
+    var selectedRow: Int = -1
     var usersList: List<User> by Delegates.observable(emptyList()) { _, old, new ->
         val diffUtil = MyDiffUtil(old, new)
         val diffResults = DiffUtil.calculateDiff(diffUtil)
         diffResults.dispatchUpdatesTo(this)
     }
-    var selectedRow: Int = -1
 
     override fun getItemCount(): Int {
         return usersList.size
@@ -42,18 +39,18 @@ class CustomAdapter(private val passData: IPassData
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         var view: View = LayoutInflater.from(parent.context).inflate(
             R.layout.row_main,
-            parent, false)
+            parent, false
+        )
         view.setOnClickListener {
-            var bundle: Bundle = Bundle()
-            Log.d("INFO", viewType.toString() + " " + usersList[viewType].toString())
-            bundle.putString("userId", usersList[viewType].id)
-            bundle.putString("userName", usersList[viewType].name)
-            bundle.putString("userNumber", usersList[viewType].number)
-            bundle.putInt("userPhoto", usersList[viewType].photo)
-            bundle.putBoolean("userIsFavorite", usersList[viewType].isFavorite)
-            bundle.putString("userAddress", usersList[viewType].address)
-            bundle.putInt("position", viewType)
-            passData.onSelectUser(bundle)
+            var selectedUser: User = User(
+                usersList[viewType].id,
+                usersList[viewType].name,
+                usersList[viewType].number,
+                usersList[viewType].address,
+                usersList[viewType].photo,
+                usersList[viewType].isFavorite
+            )
+            selectUser(selectedUser, viewType)
             selectedRow = viewType
             notifyDataSetChanged()
         }
