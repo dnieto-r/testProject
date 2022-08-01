@@ -19,10 +19,10 @@ class EditTextDialog : DialogFragment() {
         (this.context?.applicationContext as MyApplication).myDatabase
     }
 
-    lateinit var etName: EditText
-    lateinit var etNumber: EditText
-    lateinit var etAddress: EditText
-    var onCancel: (() -> Unit)? = null
+    private lateinit var etName: EditText
+    private lateinit var etNumber: EditText
+    private lateinit var etAddress: EditText
+    private var onCancel: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = requireActivity().layoutInflater.inflate(R.layout.dialog_edit_text, null)
@@ -39,7 +39,7 @@ class EditTextDialog : DialogFragment() {
                 val address = etAddress.text.toString()
                 if (name != "" && number != "" && address != "") {
                     var user = User(
-                        myStorage.getUsers().size.toString(),
+                        myStorage.getUsers()?.size.toString(),
                         etName.text.toString(),
                         etNumber.text.toString(),
                         etAddress.text.toString(),

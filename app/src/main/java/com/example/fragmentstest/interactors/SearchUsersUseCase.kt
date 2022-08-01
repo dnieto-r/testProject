@@ -8,9 +8,13 @@ class SearchUsersUseCase(val myStorage: Storage) :
     SearchUsersUseCase {
 
     override fun getFilteredUsers(searchCondition: String): List<User> {
-        return myStorage.getUsers().filter {
-            it.name.toLowerCase().contains(searchCondition!!)
+        return if (myStorage.getUsers() != null) {
+            myStorage.getUsers().filter {
+                it.name.toLowerCase().contains(searchCondition)
+            }
+        } else {
+            emptyList()
         }
     }
-
 }
+

@@ -11,5 +11,6 @@
     <string name="delete_contact_conf">¿Estas seguro de querer eliminar este contacto?</string>
     <string name="yes">SI</string>
     <string name="no">NO</string>
-
+    <string name="preference_file_key">contactsApp</string>
+    <string name="perms_granted">Ya se han aceptado los permisos</string>
 </resources>

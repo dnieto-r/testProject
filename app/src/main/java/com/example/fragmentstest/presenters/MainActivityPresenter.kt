@@ -9,7 +9,6 @@ import com.example.fragmentstest.views.MainActivityView
 class MainActivityPresenter(
     var displayView: MainActivityView?,
     private val AddUserUseCase: AddUserUseCase,
-    val myStorage: Storage
 ) {
 
     fun addUser(user: User) {

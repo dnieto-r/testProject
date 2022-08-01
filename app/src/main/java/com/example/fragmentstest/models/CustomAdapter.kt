@@ -1,15 +1,12 @@
 package com.example.fragmentstest.models
 
 import android.graphics.Color
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmentstest.R
-import com.example.fragmentstest.views.MainActivityView
 import kotlin.properties.Delegates
 
 class CustomAdapter(
@@ -48,8 +45,8 @@ class CustomAdapter(
             var selectedUser: User = User(
                 usersList[viewType].id,
                 usersList[viewType].name,
-                usersList[viewType].address,
                 usersList[viewType].number,
+                usersList[viewType].address,
                 usersList[viewType].photo,
                 usersList[viewType].isFavorite
             )

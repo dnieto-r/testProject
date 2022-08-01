@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_200"
-    android:id="@+id/fragment_list"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
-    android:focusable="true" android:focusableInTouchMode="true"
     tools:context=".fragments.FragmentList">
+
     <EditText
         android:id="@+id/et_searchbar"
-        android:drawableRight="@drawable/ic_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="text"/>
+        android:drawableRight="@drawable/ic_search"
+        android:inputType="text" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
