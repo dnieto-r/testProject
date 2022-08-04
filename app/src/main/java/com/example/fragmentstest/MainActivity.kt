@@ -3,9 +3,6 @@ package com.example.fragmentstest
 import android.Manifest
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.fragmentstest.databases.FileStorage
-import com.example.fragmentstest.databases.RoomLocalDBStorage
-import com.example.fragmentstest.databases.SharedPrefsStorage
 import com.example.fragmentstest.fragments.FragmentBlank
 import com.example.fragmentstest.fragments.FragmentDisplay
 import com.example.fragmentstest.fragments.FragmentList
@@ -13,8 +10,8 @@ import com.example.fragmentstest.interactors.AddUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.presenters.MainActivityPresenter
+import com.example.fragmentstest.services.AIDLService
 import com.example.fragmentstest.views.MainActivityView
-import java.io.File
 
 class MainActivity : AppCompatActivity(), MainActivityView {
 
@@ -31,6 +28,10 @@ class MainActivity : AppCompatActivity(), MainActivityView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        AIDLService.startService(this, "Foreground Service is running...")
+        PermissionsManager().checkContactsPermission(
+            Manifest.permission.READ_CONTACTS, this
+        )
         PermissionsManager().checkESPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE, this
         )

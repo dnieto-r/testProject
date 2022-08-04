@@ -1,6 +1,5 @@
 package com.example.fragmentstest.models
 
-import com.example.fragmentstest.interfaces.UserDao
 import java.io.Serializable
 
 data class User(

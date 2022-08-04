@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Fragments Test</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create">CREAR</string>
     <string name="cancel">CANCELAR</string>
     <string name="error_creating_user">Error: Has dejado algún campo en blanco</string>
