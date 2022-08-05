@@ -1,6 +1,7 @@
 package com.example.fragmentstest.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,20 +22,24 @@ import com.example.fragmentstest.interactors.SearchUsersUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.presenters.FragmentListPresenter
 import com.example.fragmentstest.views.FragmentListView
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
+import javax.inject.Inject
 
-class FragmentList : Fragment(), FragmentListView {
-    private val customAdapter by lazy { CustomAdapter(::onSelectUser) }
+class FragmentList : DaggerFragment(), FragmentListView {
 
-    private val myStorage: Storage by lazy {
-        (this.context?.applicationContext as MyApplication).myDatabase
-    }
+    @Inject
+    lateinit var myStorage: Storage
+
     private val presenter: FragmentListPresenter by lazy {
         FragmentListPresenter(
             this, (activity as MainActivity),
             SearchUsersUseCase(myStorage)
         )
     }
+
+    private val customAdapter by lazy { CustomAdapter(::onSelectUser) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

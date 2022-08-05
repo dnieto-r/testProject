@@ -1,19 +1,22 @@
 package com.example.fragmentstest
 
-import android.app.Application
-import android.util.Log
-import com.example.fragmentstest.databases.RoomLocalDBStorage
+import com.example.fragmentstest.di.DaggerAppComponent
 import com.example.fragmentstest.interfaces.Storage
+import dagger.android.DaggerApplication
+import javax.inject.Inject
 
-class MyApplication : Application() {
+class MyApplication : DaggerApplication() {
 
-    val myDatabase: Storage by lazy {
-        RoomLocalDBStorage(this) // Change this line to change the storage type
-    }
+    @Inject
+    lateinit var myStorage: Storage
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("INFO", "Se ha iniciado la aplicación")
+        applicationInjector().inject(this)
     }
+
+    public override fun applicationInjector() = DaggerAppComponent
+        .factory()
+        .create(this)
 
 }

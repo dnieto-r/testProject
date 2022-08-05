@@ -8,9 +8,10 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import javax.inject.Inject
 
-class FileStorage(
-    applicationContext: Context
+class FileStorage @Inject constructor(
+    private val applicationContext: Context
 ) : Storage {
 
     private val folder: File by lazy {

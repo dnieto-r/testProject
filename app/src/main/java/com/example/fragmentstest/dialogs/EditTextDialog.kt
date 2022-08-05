@@ -12,12 +12,12 @@ import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interfaces.Storage
+import javax.inject.Inject
 
 class EditTextDialog : DialogFragment() {
 
-    private val myStorage: Storage by lazy {
-        (this.context?.applicationContext as MyApplication).myDatabase
-    }
+    @Inject
+    lateinit var myStorage: Storage
 
     private lateinit var etName: EditText
     private lateinit var etNumber: EditText

@@ -3,30 +3,20 @@ package com.example.fragmentstest
 import android.Manifest
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.fragmentstest.databases.FileStorage
-import com.example.fragmentstest.databases.RoomLocalDBStorage
-import com.example.fragmentstest.databases.SharedPrefsStorage
 import com.example.fragmentstest.fragments.FragmentBlank
 import com.example.fragmentstest.fragments.FragmentDisplay
 import com.example.fragmentstest.fragments.FragmentList
-import com.example.fragmentstest.interactors.AddUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.presenters.MainActivityPresenter
 import com.example.fragmentstest.views.MainActivityView
-import java.io.File
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), MainActivityView {
+class MainActivity @Inject constructor() : AppCompatActivity(), MainActivityView {
 
-    private val presenter: MainActivityPresenter by lazy {
-        MainActivityPresenter(
-            this,
-            AddUserUseCase(myStorage)
-        )
-    }
-    private val myStorage: Storage by lazy {
-        (application as MyApplication).myDatabase
-    }
+    @Inject
+    lateinit var presenter: MainActivityPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

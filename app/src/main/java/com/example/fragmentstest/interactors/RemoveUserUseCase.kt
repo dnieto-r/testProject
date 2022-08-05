@@ -1,12 +1,12 @@
 package com.example.fragmentstest.interactors
 
-import com.example.fragmentstest.interfaces.RemoveUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
+import javax.inject.Inject
 
-class RemoveUserUserCase(val myStorage: Storage) : RemoveUserUseCase {
+class RemoveUserUseCase @Inject constructor(private val myStorage: Storage) {
 
-    override fun removeUser(user: User) {
+    fun removeUser(user: User) {
         myStorage.removeUser(user)
     }
 
