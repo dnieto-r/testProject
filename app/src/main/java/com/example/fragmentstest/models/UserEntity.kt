@@ -11,7 +11,7 @@ class UserEntity(
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "number") var number: String,
     @ColumnInfo(name = "address") var address: String,
-    @ColumnInfo(name = "photo") var photo: Int,
+    @ColumnInfo(name = "photo") var photo: Long,
     @ColumnInfo(name = "isFavorite") var isFavorite: Boolean
 )
 

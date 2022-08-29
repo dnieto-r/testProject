@@ -7,7 +7,7 @@ data class User(
     var name: String,
     var number: String,
     var address: String,
-    var photo: Int,
+    var photo: Long,
     var isFavorite: Boolean
 ) : Serializable
 

@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity(), MainActivityView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        AIDLService.startService(this, "Foreground Service is running...")
         PermissionsManager().checkContactsPermission(
             Manifest.permission.READ_CONTACTS, this
         )

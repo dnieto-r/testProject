@@ -61,7 +61,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         ti_name.setText(user.name)
         ti_number.setText(user.number)
         ti_address.setText(user.address)
-        app_bar_image.setImageResource(user.photo)
+        app_bar_image.setImageResource(user.photo.toInt())
         isFavorite = user.isFavorite
         if (isFavorite)
             btn_fav.setText(R.string.leave_fav)

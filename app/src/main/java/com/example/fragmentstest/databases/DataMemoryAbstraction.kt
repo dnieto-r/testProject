@@ -14,37 +14,37 @@ object DataMemoryAbstraction {
         usersReference.add(
             User(
                 "1", "Almudena", "652352510",
-                "Calle de Prueba 1", R.drawable.b, false
+                "Calle de Prueba 1", R.drawable.b.toLong(), false
             )
         )
         usersReference.add(
             User(
                 "2", "Daniel", "625793410",
-                "Calle de Prueba 2", R.drawable.a, false
+                "Calle de Prueba 2", R.drawable.a.toLong(), false
             )
         )
         usersReference.add(
             User(
                 "3", "Javier", "699243294",
-                "Calle de Prueba 3", R.drawable.c, true
+                "Calle de Prueba 3", R.drawable.c.toLong(), true
             )
         )
         usersReference.add(
             User(
                 "4", "Lucas", "699243294",
-                "Calle de Prueba 4", R.drawable.c, false
+                "Calle de Prueba 4", R.drawable.c.toLong(), false
             )
         )
         usersReference.add(
             User(
                 "5", "María", "652352510",
-                "Calle de Prueba 5", R.drawable.b, false
+                "Calle de Prueba 5", R.drawable.b.toLong(), false
             )
         )
         usersReference.add(
             User(
                 "6", "Pepe", "654634534",
-                "Calle de Prueba 6", R.drawable.a, false
+                "Calle de Prueba 6", R.drawable.a.toLong(), false
             )
         )
     }

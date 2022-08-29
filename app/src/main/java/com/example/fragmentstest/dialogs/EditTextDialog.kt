@@ -43,7 +43,7 @@ class EditTextDialog : DialogFragment() {
                         etName.text.toString(),
                         etNumber.text.toString(),
                         etAddress.text.toString(),
-                        R.drawable.ic_launcher_background, false
+                        R.drawable.ic_launcher_background.toLong(), false
                     )
                     (activity as MainActivity).addUser(user)
                 } else {

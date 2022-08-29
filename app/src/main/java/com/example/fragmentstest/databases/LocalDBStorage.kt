@@ -46,7 +46,7 @@ class LocalDBStorage(
                     it.getString(it.getColumnIndex(DBData.COLUMN_NAME_NAME)),
                     it.getString(it.getColumnIndex(DBData.COLUMN_NAME_NUMBER)),
                     it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ADDRESS)),
-                    it.getInt(it.getColumnIndex(DBData.COLUMN_NAME_PHOTO)),
+                    it.getInt(it.getColumnIndex(DBData.COLUMN_NAME_PHOTO)).toLong(),
                     it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ISFAVORITE)).toBoolean()
                 )
                 usersList.add(user)
