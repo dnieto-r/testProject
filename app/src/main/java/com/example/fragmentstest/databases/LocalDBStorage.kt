@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.Group
 
 class LocalDBStorage(
     applicationContext: Context
@@ -106,6 +107,30 @@ class LocalDBStorage(
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         p0?.execSQL(DBData.SQL_DELETE_ENTRIES)
         onCreate(p0)
+    }
+
+    override fun createGroup(group: Group) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroups(): List<Group> {
+        TODO("Not yet implemented")
+    }
+
+    override fun addUserToGroup(userId: String, groupId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun removeGroup(group: Group) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroup(userId: String): Group {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateUserGroup(userId: String, groupId: Int) {
+        TODO("Not yet implemented")
     }
 
 }

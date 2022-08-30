@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmentstest.R
 import kotlin.properties.Delegates
 
-class CustomAdapter(
+class UsersAdapter(
     val selectUser: ((user: User, position: Int) -> Unit)
 ) : RecyclerView.Adapter<MyViewHolder>() {
     var selectedRow: Int = -1
@@ -38,7 +38,7 @@ class CustomAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         var view: View = LayoutInflater.from(parent.context).inflate(
-            R.layout.row_main,
+            R.layout.row_user,
             parent, false
         )
         view.setOnClickListener {

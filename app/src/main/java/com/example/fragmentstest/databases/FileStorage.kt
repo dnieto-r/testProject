@@ -3,6 +3,7 @@ package com.example.fragmentstest.databases
 import android.content.Context
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.Group
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -74,6 +75,30 @@ class FileStorage(
 
         fos.close()
         oos.close();
+    }
+
+    override fun createGroup(group: Group) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroups(): List<Group> {
+        TODO("Not yet implemented")
+    }
+
+    override fun removeGroup(group: Group) {
+        TODO("Not yet implemented")
+    }
+
+    override fun addUserToGroup(userId: String, groupId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroup(userId: String): Group {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateUserGroup(userId: String, groupId: Int) {
+        TODO("Not yet implemented")
     }
 
 }

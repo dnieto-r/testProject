@@ -2,6 +2,7 @@ package com.example.fragmentstest
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fragmentstest.databases.FileStorage
 import com.example.fragmentstest.databases.RoomLocalDBStorage
@@ -11,6 +12,7 @@ import com.example.fragmentstest.fragments.FragmentDisplay
 import com.example.fragmentstest.fragments.FragmentList
 import com.example.fragmentstest.interactors.AddUserUseCase
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.Group
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.presenters.MainActivityPresenter
 import com.example.fragmentstest.views.MainActivityView
@@ -34,6 +36,9 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         PermissionsManager().checkESPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE, this
         )
+        if (myStorage.getGroups().isEmpty()) {
+            myStorage.createGroup(Group(0, "Sin Grupo"));
+        }
         setContentView(R.layout.activity_main)
         setupFragments()
     }

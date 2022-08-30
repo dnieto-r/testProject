@@ -8,6 +8,7 @@ class AddUserUseCase(val myStorage: Storage) : AddUserUseCase {
 
     override fun addUser(user: User) {
         myStorage.addUser(user)
+        myStorage.addUserToGroup(user.id, 0)
     }
 
 }

@@ -2,22 +2,26 @@ package com.example.fragmentstest.fragments
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.example.fragmentstest.MainActivity
-import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interactors.EditUserUseCase
 import com.example.fragmentstest.interactors.RemoveUserUserCase
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.User
 import com.example.fragmentstest.presenters.FragmentDisplayPresenter
 import com.example.fragmentstest.views.FragmentDisplayView
 import com.example.fragmentstest.views.MainActivityView
 import kotlinx.android.synthetic.main.fragment_display.*
+
 
 class FragmentDisplay : Fragment(), FragmentDisplayView {
 
@@ -69,6 +73,25 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
             btn_fav.setText(R.string.add_fav)
 
         initializeEvents(myStorage.getUsers()[position], myStorage.getUsers(), position)
+
+        val groups = myStorage.getGroups().map { it.name }
+        val arrayAdapter = ArrayAdapter(this.requireContext(), R.layout.dropdown_item, groups)
+        s_group.adapter = arrayAdapter
+        val groupName = myStorage.getGroup(user.id).name
+        val groupPosition = arrayAdapter.getPosition(groupName)
+        s_group.setSelection(groupPosition)
+        s_group.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                myStorage.updateUserGroup(user.id, position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
     override fun onCreateView(

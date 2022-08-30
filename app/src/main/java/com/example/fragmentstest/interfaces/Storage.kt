@@ -1,11 +1,8 @@
 package com.example.fragmentstest.interfaces
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import com.example.fragmentstest.models.Group
 import com.example.fragmentstest.models.User
+import com.example.fragmentstest.models.UserGroupEntity
 
 interface Storage {
 
@@ -16,5 +13,17 @@ interface Storage {
     fun addUser(user: User)
 
     fun removeUser(user: User)
+
+    fun createGroup(group: Group)
+
+    fun removeGroup(group: Group)
+
+    fun getGroups(): List<Group>
+
+    fun addUserToGroup(userId: String, groupId: Int)
+
+    fun getGroup(userId: String): Group
+
+    fun updateUserGroup(userId: String, groupId: Int)
 
 }

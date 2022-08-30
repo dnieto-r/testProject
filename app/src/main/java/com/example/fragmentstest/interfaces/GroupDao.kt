@@ -10,18 +10,18 @@ import com.example.fragmentstest.models.User
 import com.example.fragmentstest.models.UserEntity
 
 @Dao
-interface UserDao {
+interface GroupDao {
 
-    @Query("SELECT * FROM usersList")
-    fun getUsers(): List<UserEntity>
-
-    @Update
-    fun editUser(user: UserEntity)
+    @Query("SELECT * FROM groupList")
+    fun getGroups(): List<GroupEntity>
 
     @Insert
-    fun addUser(user: UserEntity)
+    fun createGroup(group: GroupEntity)
 
     @Delete
-    fun removeUser(user: UserEntity)
+    fun removeGroup(group: GroupEntity)
 
+    @Query("SELECT name FROM groupList where id=:groupId")
+    fun getGroupName(groupId: Int): String
+    
 }

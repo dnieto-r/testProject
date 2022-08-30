@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fragmentstest.MainActivity
-import com.example.fragmentstest.models.CustomAdapter
+import com.example.fragmentstest.models.UsersAdapter
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
@@ -24,7 +24,7 @@ import com.example.fragmentstest.views.FragmentListView
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class FragmentList : Fragment(), FragmentListView {
-    private val customAdapter by lazy { CustomAdapter(::onSelectUser) }
+    private val customAdapter by lazy { UsersAdapter(::onSelectUser) }
 
     private val myStorage: Storage by lazy {
         (this.context?.applicationContext as MyApplication).myDatabase
@@ -75,7 +75,7 @@ class FragmentList : Fragment(), FragmentListView {
                 Log.d("After Text Changed: ", s.toString())
             }
         })
-        et_searchbar.setOnTouchListener(OnTouchListener { v, event ->
+        et_searchbar.setOnTouchListener(OnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= et_searchbar.right -
                     et_searchbar.compoundDrawables[2].bounds.width()

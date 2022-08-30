@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.example.fragmentstest.R
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.Group
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -56,10 +57,34 @@ class SharedPrefsStorage(
         saveList(usersList)
     }
 
+    override fun createGroup(group: Group) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroups(): List<Group> {
+        TODO("Not yet implemented")
+    }
+
+    override fun removeGroup(group: Group) {
+        TODO("Not yet implemented")
+    }
+
     private fun saveList(usersList: List<User>) {
         val usersInJson = gson.toJson(usersList)
         sharedPrefEditor.putString("users", usersInJson)
         sharedPrefEditor.commit();
+    }
+
+    override fun addUserToGroup(userId: String, groupId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroup(userId: String): Group {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateUserGroup(userId: String, groupId: Int) {
+        TODO("Not yet implemented")
     }
 
 }
