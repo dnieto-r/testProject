@@ -61,6 +61,12 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         val user = arguments?.getSerializable("user") as User
         val position = arguments?.getInt("position") ?: 0
 
+        loadUserInfo(user)
+        loadUserGroup(user)
+        initializeEvents(myStorage.getUsers()[position], myStorage.getUsers(), position)
+    }
+
+    private fun loadUserInfo(user: User) {
         isUserSelected = true
         ti_name.setText(user.name)
         ti_number.setText(user.number)
@@ -72,26 +78,16 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         else
             btn_fav.setText(R.string.add_fav)
 
-        initializeEvents(myStorage.getUsers()[position], myStorage.getUsers(), position)
+    }
 
+    private fun loadUserGroup(user: User) {
         val groups = myStorage.getGroups().map { it.name }
         val arrayAdapter = ArrayAdapter(this.requireContext(), R.layout.dropdown_item, groups)
-        s_group.adapter = arrayAdapter
-        val groupName = myStorage.getGroup(user.id).name
+        val groupName = myStorage.getGroup(user.id)?.name
         val groupPosition = arrayAdapter.getPosition(groupName)
-        s_group.setSelection(groupPosition)
-        s_group.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                myStorage.updateUserGroup(user.id, position)
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+        s_group.adapter = arrayAdapter
+        s_group.setSelection(groupPosition)
     }
 
     override fun onCreateView(
@@ -102,18 +98,18 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
     }
 
     private fun initializeEvents(user: User, usersReference: List<User>, position: Int) {
-        ti_name.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+        ti_name.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 this.setIsEditing(ti_name.text.toString(), user.name)
-        })
-        ti_number.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+        }
+        ti_number.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 this.setIsEditing(ti_number.text.toString(), user.number)
-        })
-        ti_address.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+        }
+        ti_address.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 this.setIsEditing(ti_address.text.toString(), user.address)
-        })
+        }
         btn_fav.setOnClickListener {
             isFavorite = !isFavorite
             this.setIsEditing(isFavorite, user.isFavorite)
@@ -146,11 +142,23 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
                     .show()
             }
         }
+        s_group.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                myStorage.updateUserGroup(user.id, position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
     private fun setIsEditing(newData: Any, oldData: Any) {
         if (newData != oldData) {
-            fab.backgroundTintList = this.getResources().getColorStateList(R.color.green)
+            fab.backgroundTintList = this.resources.getColorStateList(R.color.green)
             fab.setImageResource(R.drawable.ic_edit)
             isEdited = true
         }
@@ -163,7 +171,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
     override fun onEditUser() {
         isEdited = false
         mainActivityView.onEditUser()
-        fab.backgroundTintList = this.getResources().getColorStateList(R.color.red)
+        fab.backgroundTintList = this.resources.getColorStateList(R.color.red)
         fab.setImageResource(R.drawable.ic_delete)
     }
 

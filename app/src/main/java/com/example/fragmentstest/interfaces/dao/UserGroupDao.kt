@@ -1,14 +1,12 @@
-package com.example.fragmentstest.interfaces
+package com.example.fragmentstest.interfaces.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.fragmentstest.models.Group
-import com.example.fragmentstest.models.GroupEntity
-import com.example.fragmentstest.models.UserEntity
-import com.example.fragmentstest.models.UserGroupEntity
+import com.example.fragmentstest.models.entities.GroupEntity
+import com.example.fragmentstest.models.entities.UserGroupEntity
 
 @Dao
 interface UserGroupDao {

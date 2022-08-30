@@ -1,4 +1,4 @@
-package com.example.fragmentstest.interfaces
+package com.example.fragmentstest.interfaces.useCases
 
 import com.example.fragmentstest.models.User
 

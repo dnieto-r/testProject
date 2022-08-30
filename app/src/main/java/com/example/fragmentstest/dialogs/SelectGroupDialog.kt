@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interfaces.Storage
-import com.example.fragmentstest.models.Group
-import com.example.fragmentstest.models.GroupsAdapter
+import com.example.fragmentstest.models.adapters.GroupsAdapter
 
 class SelectGroupDialog : DialogFragment() {
 
@@ -20,7 +19,7 @@ class SelectGroupDialog : DialogFragment() {
     }
 
     private val groupsAdapter by lazy {
-        val adapter = GroupsAdapter(requireActivity().supportFragmentManager)
+        val adapter = GroupsAdapter(requireActivity().supportFragmentManager, this)
         adapter.groupList = myStorage.getGroups().drop(1)
         adapter
     }
@@ -37,6 +36,7 @@ class SelectGroupDialog : DialogFragment() {
             .setNegativeButton(getString(R.string.cancel)) { _, _ ->
                 onCancel?.invoke()
             }
+
         val dialog = builder.create()
         rvGroups.apply {
             layoutManager = LinearLayoutManager(activity)

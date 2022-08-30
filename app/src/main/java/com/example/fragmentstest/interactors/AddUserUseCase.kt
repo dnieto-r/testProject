@@ -1,6 +1,6 @@
 package com.example.fragmentstest.interactors
 
-import com.example.fragmentstest.interfaces.AddUserUseCase
+import com.example.fragmentstest.interfaces.useCases.AddUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 

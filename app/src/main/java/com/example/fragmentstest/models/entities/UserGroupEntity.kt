@@ -1,8 +1,7 @@
-package com.example.fragmentstest.models
+package com.example.fragmentstest.models.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "userGroupList",
     primaryKeys = ["userId"],
@@ -16,7 +15,9 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = GroupEntity::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("groupId")
+            childColumns = arrayOf("groupId"),
+                    onDelete = ForeignKey.CASCADE
+
         )]
     )
 class UserGroupEntity(

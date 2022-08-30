@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fragmentstest.MainActivity
-import com.example.fragmentstest.models.UsersAdapter
+import com.example.fragmentstest.models.adapters.UsersAdapter
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R

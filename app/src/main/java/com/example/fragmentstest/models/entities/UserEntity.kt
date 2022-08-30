@@ -1,10 +1,9 @@
-package com.example.fragmentstest.models
+package com.example.fragmentstest.models.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.io.Serializable
+import com.example.fragmentstest.models.User
 
 @Entity(tableName = "usersList")
 class UserEntity(

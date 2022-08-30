@@ -1,8 +1,9 @@
-package com.example.fragmentstest.models
+package com.example.fragmentstest.models.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.fragmentstest.models.Group
 
 @Entity(tableName = "groupList")
 class GroupEntity(

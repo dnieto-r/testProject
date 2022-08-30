@@ -23,19 +23,18 @@ class EditGroupDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = requireActivity().layoutInflater.inflate(R.layout.dialog_create_group, null)
+        val group = myStorage.getGroups()[arguments?.getInt("position") ?: 0]
 
         etName = view.findViewById(R.id.et_name)
-        val group = myStorage.getGroups()[arguments?.getInt("position") ?: 0]
         etName.hint = group.name
 
         val builder = AlertDialog.Builder(requireContext())
             .setView(view)
-            .setPositiveButton(getString(R.string.create)) { _, _ ->
+            .setPositiveButton(getString(R.string.modify)) { _, _ ->
                 val name = etName.text.toString()
                 if (name != "") {
-                    val newId: Int = myStorage.getGroups().size
-                    val group = Group(newId, name)
-                    myStorage.createGroup(group)
+                    val group = Group(group.id, name)
+                    myStorage.updateGroup(group)
                 } else {
                     Toast.makeText(
                         this.requireActivity().applicationContext,
@@ -44,8 +43,10 @@ class EditGroupDialog : DialogFragment() {
                 }
             }
             .setNegativeButton(getString(R.string.delete)) { _, _ ->
+                myStorage.removeGroup(group)
                 onCancel?.invoke()
             }
+
         val dialog = builder.create()
 
         dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)

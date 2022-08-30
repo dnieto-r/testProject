@@ -1,5 +1,6 @@
 package com.example.fragmentstest.models
 
+import com.example.fragmentstest.models.entities.GroupEntity
 import java.io.Serializable
 
 data class Group(

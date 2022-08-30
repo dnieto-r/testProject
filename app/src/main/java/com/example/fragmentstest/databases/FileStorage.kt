@@ -77,28 +77,22 @@ class FileStorage(
         oos.close();
     }
 
-    override fun createGroup(group: Group) {
-        TODO("Not yet implemented")
-    }
+    override fun createGroup(group: Group) {}
 
     override fun getGroups(): List<Group> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
-    override fun removeGroup(group: Group) {
-        TODO("Not yet implemented")
-    }
+    override fun removeGroup(group: Group) {}
 
-    override fun addUserToGroup(userId: String, groupId: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun addUserToGroup(userId: String, groupId: Int) {}
 
     override fun getGroup(userId: String): Group {
-        TODO("Not yet implemented")
+        return Group(0, "Sin Grupo")
     }
 
-    override fun updateUserGroup(userId: String, groupId: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun updateUserGroup(userId: String, groupId: Int) {}
+
+    override fun updateGroup(group: Group) {}
 
 }

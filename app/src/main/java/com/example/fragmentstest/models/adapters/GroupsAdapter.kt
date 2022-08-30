@@ -1,4 +1,4 @@
-package com.example.fragmentstest.models
+package com.example.fragmentstest.models.adapters
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +9,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmentstest.R
 import com.example.fragmentstest.dialogs.EditGroupDialog
+import com.example.fragmentstest.dialogs.SelectGroupDialog
+import com.example.fragmentstest.models.Group
+import com.example.fragmentstest.models.MyDiffUtil
+import com.example.fragmentstest.models.MyViewHolderGroup
 import kotlin.properties.Delegates
 
 class GroupsAdapter(
-    var fragmentManager: FragmentManager
+    var fragmentManager: FragmentManager,
+    var selectGroupDialog: SelectGroupDialog
 ) : RecyclerView.Adapter<MyViewHolderGroup>() {
     var selectedRow = -1
     var groupList: List<Group> by Delegates.observable(emptyList()) { _, old, new ->
@@ -41,12 +46,12 @@ class GroupsAdapter(
         )
         val newEditGroupFragment = EditGroupDialog()
 
-
         view.setOnClickListener {
             selectedRow = viewType
             val args = Bundle()
             args.putInt("position", viewType + 1)
             newEditGroupFragment.arguments = args
+            selectGroupDialog.dismiss()
             newEditGroupFragment.show(fragmentManager, "editGroup")
         }
         return MyViewHolderGroup(

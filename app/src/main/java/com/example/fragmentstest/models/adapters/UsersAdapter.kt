@@ -1,4 +1,4 @@
-package com.example.fragmentstest.models
+package com.example.fragmentstest.models.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmentstest.R
+import com.example.fragmentstest.models.MyDiffUtil
+import com.example.fragmentstest.models.MyViewHolder
+import com.example.fragmentstest.models.User
 import kotlin.properties.Delegates
 
 class UsersAdapter(
