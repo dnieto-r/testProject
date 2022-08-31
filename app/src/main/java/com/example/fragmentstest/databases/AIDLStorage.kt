@@ -8,14 +8,13 @@ import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.services.AIDLService
 
 class AIDLStorage(
-    val applicationContext: Context
+    private val applicationContext: Context
 ) : Storage {
 
     override fun getUsers(): List<User> {
-        val aidlUsers = (applicationContext as MyApplication).aidlService.getUsers()
-
-        Log.d("INFO", "${aidlUsers.size}")
-        return aidlUsers
+        var users = (applicationContext as MyApplication).myService?.internalContacts
+        Log.d("INFORMACION", users?.size.toString())
+        return users ?: emptyList()
     }
 
     override fun editUser(user: User) {

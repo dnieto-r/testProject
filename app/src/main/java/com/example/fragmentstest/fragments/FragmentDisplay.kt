@@ -1,11 +1,13 @@
 package com.example.fragmentstest.fragments
 
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.example.fragmentstest.MainActivity
 import com.example.fragmentstest.models.User
@@ -35,7 +37,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
             val f = FragmentDisplay()
 
             val args = Bundle()
-            args.putSerializable("user", user)
+            args.putParcelable("user", user)
             args.putInt("position", position)
             f.arguments = args
 
@@ -54,15 +56,16 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
 
     override fun onResume() {
         super.onResume()
-        val user = arguments?.getSerializable("user") as User
+        val user = arguments?.getParcelable<User>("user")
+
         val position = arguments?.getInt("position") ?: 0
 
         isUserSelected = true
-        ti_name.setText(user.name)
-        ti_number.setText(user.number)
-        ti_address.setText(user.address)
-        app_bar_image.setImageResource(user.photo.toInt())
-        isFavorite = user.isFavorite
+        ti_name.setText(user?.name)
+        ti_number.setText(user?.number)
+        ti_address.setText(user?.address)
+        app_bar_image.setImageResource(user?.photo?.toInt() ?: 0)
+        isFavorite = user?.isFavorite ?: false
         if (isFavorite)
             btn_fav.setText(R.string.leave_fav)
         else

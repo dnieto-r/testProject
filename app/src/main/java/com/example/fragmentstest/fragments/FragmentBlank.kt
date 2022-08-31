@@ -1,6 +1,7 @@
 package com.example.fragmentstest.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,8 @@ class FragmentBlank : Fragment() {
     override fun onResume() {
         super.onResume()
         fab_createUser.setOnClickListener {
+            Log.d("INFO", (this.requireActivity().applicationContext
+                    as MyApplication).myService?.internalContacts?.size.toString())
             val dialog = EditTextDialog()
             dialog.show(
                 requireActivity().supportFragmentManager,

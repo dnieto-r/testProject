@@ -1,7 +1,11 @@
 package com.example.fragmentstest.models
 
+import android.os.Parcelable
+import com.example.fragmentstest.models.UserEntity
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
+@Parcelize
 data class User(
     var id: String,
     var name: String,
@@ -9,7 +13,7 @@ data class User(
     var address: String,
     var photo: Long,
     var isFavorite: Boolean
-) : Serializable
+) : Parcelable
 
 fun User.toDao() = UserEntity(
     id = id,

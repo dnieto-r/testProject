@@ -10,7 +10,6 @@ import com.example.fragmentstest.interactors.AddUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.presenters.MainActivityPresenter
-import com.example.fragmentstest.services.AIDLService
 import com.example.fragmentstest.views.MainActivityView
 
 class MainActivity : AppCompatActivity(), MainActivityView {

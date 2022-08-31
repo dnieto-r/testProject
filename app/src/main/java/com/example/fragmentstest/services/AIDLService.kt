@@ -10,26 +10,56 @@ import android.content.Intent
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.example.fragmentstest.IAIDLStore
+import com.example.fragmentstest.AIDLStore
 import com.example.fragmentstest.MainActivity
 import com.example.fragmentstest.R
 import com.example.fragmentstest.models.User
 import java.io.Serializable
 
-
 class AIDLService : Service() {
     var contacts: MutableList<User> = emptyList<User>().toMutableList()
+    private var selection: String =
+        ContactsContract.Data.MIMETYPE + " IN ('" + Phone.CONTENT_ITEM_TYPE +
+                "', '" + Email.CONTENT_ITEM_TYPE + "')"
 
-    private val binder = object : IAIDLStore.Stub() {
-        override fun calculate(a: Int, b: Int): Int {
-            return a + b
+    private val CHANNEL_ID = "ForegroundService Kotlin"
+
+    private val binder = object : AIDLStore.Stub() {
+
+        override fun getInternalContacts(): List<User> {
+            var contacts: MutableList<User> = emptyList<User>().toMutableList()
+
+            var cur: Cursor = contentResolver.query(
+                ContactsContract.Data.CONTENT_URI,
+                projection,
+                selection,
+                null,
+                null
+            )!!
+
+            if (cur != null) {
+                var next = cur.moveToNext()
+                while (next && cur.position < 375) {
+                    val id: Long = cur.getLong(0)
+                    val name: String = cur.getString(1)
+                    val mime: String = cur.getString(2)
+                    val data: String = cur.getString(3)
+                    val photoId: Long = R.drawable.ic_launcher_background.toLong()
+                    var user = User(id.toString(), name, data, mime, photoId, false)
+                    contacts.add(user)
+                    cur.moveToNext()
+                }
+            }
+            return contacts
         }
     }
 
@@ -42,11 +72,6 @@ class AIDLService : Service() {
         ContactsContract.Data.DATA3,
         ContactsContract.Data.PHOTO_ID
     )
-    private var selection: String =
-        ContactsContract.Data.MIMETYPE + " IN ('" + Phone.CONTENT_ITEM_TYPE +
-                "', '" + Email.CONTENT_ITEM_TYPE + "')"
-
-    val CHANNEL_ID = "ForegroundService Kotlin"
 
     fun startService(context: Context) {
         val startIntent = Intent(context, AIDLService::class.java)
@@ -55,40 +80,26 @@ class AIDLService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
-        updateNotification()
+        val mainHandler = Handler(Looper.getMainLooper())
+
+        mainHandler.post(object : Runnable {
+            override fun run() {
+                updateNotification()
+                mainHandler.postDelayed(this, 10000)
+            }
+        })
         return START_STICKY
     }
 
-    fun updateNotification() {
-        var cur: Cursor = contentResolver.query(
-            ContactsContract.Data.CONTENT_URI,
-            projection,
-            selection,
-            null,
-            null
-        )!!
+    private fun updateNotification() {
+        contacts = binder.internalContacts.toMutableList()
 
-        if (cur != null) {
-            var next = cur.moveToNext()
-            Log.d("NEXT", next.toString() + " " + cur.position)
-            while (next && cur.position < 375) {
-                Log.d("NUMBER", "${contacts.size}")
-                val id: Long = cur.getLong(0)
-                val name: String = cur.getString(1)
-                val mime: String = cur.getString(2)
-                val data: String = cur.getString(3)
-                val photoId: Long = cur.getLong(6)
-                var user = User(id.toString(), name, data, mime, photoId, false)
-                contacts.add(user)
-                cur.moveToNext()
-            }
-        }
-        sendDataToActivity()
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
             this,
             0, notificationIntent, 0
         )
+
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getText(R.string.app_name))
             .setContentText("Hay ${contacts.size} contactos disponibles")
@@ -102,14 +113,6 @@ class AIDLService : Service() {
         return binder
     }
 
-    private fun sendDataToActivity() {
-        val sendLevel = Intent()
-        sendLevel.action = "USERS_LIST"
-        val args = Bundle()
-        args.putSerializable("ARRAYLIST", contacts as Serializable)
-        sendLevel.putExtra("USERS_LIST", args)
-        sendBroadcast(sendLevel)
-    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
