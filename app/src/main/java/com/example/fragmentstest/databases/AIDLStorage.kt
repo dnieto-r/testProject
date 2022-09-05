@@ -1,20 +1,65 @@
 package com.example.fragmentstest.databases
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.util.Log
+import com.example.fragmentstest.AIDLStore
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
-import com.example.fragmentstest.services.AIDLService
+import com.example.fragmentstest.models.CustomCallback
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers.io
 
 class AIDLStorage(
     private val applicationContext: Context
 ) : Storage {
+    var myService: AIDLStore? = null
+
+    private val mConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            myService = AIDLStore.Stub.asInterface(service)
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            myService = null
+        }
+    }
+
+    private fun initialize() {
+        val i = Intent()
+
+        i.setClassName("com.example.fragmentstest",
+            "com.example.fragmentstest.services.AIDLService")
+
+        applicationContext.bindService(i,
+            mConnection,
+            Context.BIND_AUTO_CREATE)
+    }
+
+    override fun getRxUser(): Single<List<User>> {
+        val getUsers = Single.create<List<User>>{ emitter ->
+            initialize()
+
+            val customCallback = object : CustomCallback.Stub() {
+                override fun onResult(result: List<User>){
+                    emitter.onSuccess(result)
+                }
+            }
+            Log.d("INFO", myService.toString())
+            myService?.getMobileContacts(customCallback)
+        }.subscribeOn(io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+        return getUsers
+    }
 
     override fun getUsers(): List<User> {
-        var users = (applicationContext as MyApplication).myService?.internalContacts
-        Log.d("INFORMACION", users?.size.toString())
-        return users ?: emptyList()
+        return emptyList()
     }
 
     override fun editUser(user: User) {

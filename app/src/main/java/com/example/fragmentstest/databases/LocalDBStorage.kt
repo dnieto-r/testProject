@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import io.reactivex.rxjava3.core.Single
 
 class LocalDBStorage(
     applicationContext: Context
@@ -106,6 +107,10 @@ class LocalDBStorage(
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         p0?.execSQL(DBData.SQL_DELETE_ENTRIES)
         onCreate(p0)
+    }
+
+    override fun getRxUser(): Single<List<User>> {
+        return Single.never()
     }
 
 }

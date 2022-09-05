@@ -3,6 +3,7 @@ package com.example.fragmentstest.databases
 import android.content.Context
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import io.reactivex.rxjava3.core.Single
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -76,4 +77,7 @@ class FileStorage(
         oos.close();
     }
 
+    override fun getRxUser(): Single<List<User>> {
+        return Single.never()
+    }
 }

@@ -17,10 +17,12 @@ import com.example.fragmentstest.models.CustomAdapter
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
+import com.example.fragmentstest.databases.AIDLStorage
 import com.example.fragmentstest.interactors.SearchUsersUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.presenters.FragmentListPresenter
 import com.example.fragmentstest.views.FragmentListView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class FragmentList : Fragment(), FragmentListView {
@@ -43,15 +45,21 @@ class FragmentList : Fragment(), FragmentListView {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         this.setupList()
         this.setupSearchInput()
     }
 
     override fun setupList() {
-        if (myStorage.getUsers() != null)
-            customAdapter.usersList = myStorage!!.getUsers()
+        if (myStorage is AIDLStorage) {
+            myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    customAdapter.usersList = it
+                }
+        } else {
+            customAdapter.usersList = myStorage?.getUsers()
+        }
 
         rv_users.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -122,7 +130,13 @@ class FragmentList : Fragment(), FragmentListView {
     }
 
     private fun reloadUsers() {
-        if (myStorage.getUsers() != null)
-            customAdapter.usersList = myStorage!!.getUsers()
+        if (myStorage is AIDLStorage) {
+            myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    customAdapter.usersList = it
+                }
+        } else {
+            customAdapter.usersList = myStorage?.getUsers()
+        }
     }
 }

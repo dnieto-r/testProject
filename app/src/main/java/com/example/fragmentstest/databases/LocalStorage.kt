@@ -2,6 +2,7 @@ package com.example.fragmentstest.databases
 
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import io.reactivex.rxjava3.core.Single
 
 class LocalStorage : Storage {
 
@@ -23,6 +24,10 @@ class LocalStorage : Storage {
 
     override fun removeUser(user: User) {
         DataMemoryAbstraction.usersReference.remove(user)
+    }
+
+    override fun getRxUser(): Single<List<User>> {
+        return Single.never()
     }
 
 }

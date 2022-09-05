@@ -6,6 +6,7 @@ import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.models.toDC
 import com.example.fragmentstest.models.toDao
+import io.reactivex.rxjava3.core.Single
 
 class RoomLocalDBStorage(
     applicationContext: Context
@@ -37,4 +38,7 @@ class RoomLocalDBStorage(
         userDao.removeUser(user.toDao())
     }
 
+    override fun getRxUser(): Single<List<User>> {
+        return Single.never()
+    }
 }

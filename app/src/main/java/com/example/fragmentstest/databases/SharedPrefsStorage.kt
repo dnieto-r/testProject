@@ -7,6 +7,7 @@ import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.rxjava3.core.Single
 
 class SharedPrefsStorage(
     private val activityContext: Context
@@ -62,4 +63,7 @@ class SharedPrefsStorage(
         sharedPrefEditor.commit();
     }
 
+    override fun getRxUser(): Single<List<User>> {
+        return Single.never()
+    }
 }

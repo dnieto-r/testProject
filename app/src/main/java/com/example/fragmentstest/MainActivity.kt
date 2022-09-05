@@ -7,6 +7,7 @@ import com.example.fragmentstest.fragments.FragmentBlank
 import com.example.fragmentstest.fragments.FragmentDisplay
 import com.example.fragmentstest.fragments.FragmentList
 import com.example.fragmentstest.interactors.AddUserUseCase
+import com.example.fragmentstest.interactors.ShowContactNotificationUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.presenters.MainActivityPresenter
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         (application as MyApplication).myDatabase
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +37,13 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         )
         setContentView(R.layout.activity_main)
         setupFragments()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val showContactUseCase =
+            ShowContactNotificationUseCase(this.applicationContext, myStorage)
+        showContactUseCase.execute()
     }
 
     override fun onDeleteSearch() {

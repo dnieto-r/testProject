@@ -1,8 +1,8 @@
-// AIDLStore.aidl
 package com.example.fragmentstest;
 
 import com.example.fragmentstest.models.User;
+import com.example.fragmentstest.models.CustomCallback;
 
 interface AIDLStore {
-    List<User> getInternalContacts();
+    void getMobileContacts(in CustomCallback output);
 }

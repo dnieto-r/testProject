@@ -13,12 +13,14 @@ import com.example.fragmentstest.MainActivity
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
+import com.example.fragmentstest.databases.AIDLStorage
 import com.example.fragmentstest.interactors.EditUserUseCase
 import com.example.fragmentstest.interactors.RemoveUserUserCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.presenters.FragmentDisplayPresenter
 import com.example.fragmentstest.views.FragmentDisplayView
 import com.example.fragmentstest.views.MainActivityView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_display.*
 
 class FragmentDisplay : Fragment(), FragmentDisplayView {
@@ -34,14 +36,14 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
 
     companion object {
         fun newInstance(user: User, position: Int): FragmentDisplay {
-            val f = FragmentDisplay()
+            val fd = FragmentDisplay()
 
             val args = Bundle()
             args.putParcelable("user", user)
             args.putInt("position", position)
-            f.arguments = args
+            fd.arguments = args
 
-            return f
+            return fd
         }
     }
 
@@ -57,8 +59,8 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
     override fun onResume() {
         super.onResume()
         val user = arguments?.getParcelable<User>("user")
-
         val position = arguments?.getInt("position") ?: 0
+        var users = emptyList<User>()
 
         isUserSelected = true
         ti_name.setText(user?.name)
@@ -71,7 +73,17 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         else
             btn_fav.setText(R.string.add_fav)
 
-        initializeEvents(myStorage.getUsers()[position], myStorage.getUsers(), position)
+        if (myStorage is AIDLStorage) {
+            myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    users = it
+                    initializeEvents(users, position)
+                }
+        } else {
+            users = myStorage?.getUsers()
+            initializeEvents(users, position)
+        }
+
     }
 
     override fun onCreateView(
@@ -81,19 +93,20 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         return inflater.inflate(R.layout.fragment_display, container, false)
     }
 
-    private fun initializeEvents(user: User, usersReference: List<User>, position: Int) {
-        ti_name.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+    private fun initializeEvents(usersReference: List<User>, position: Int) {
+        val user = usersReference[position]
+        ti_name.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 this.setIsEditing(ti_name.text.toString(), user.name)
-        })
-        ti_number.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+        }
+        ti_number.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 this.setIsEditing(ti_number.text.toString(), user.number)
-        })
-        ti_address.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+        }
+        ti_address.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 this.setIsEditing(ti_address.text.toString(), user.address)
-        })
+        }
         btn_fav.setOnClickListener {
             isFavorite = !isFavorite
             this.setIsEditing(isFavorite, user.isFavorite)

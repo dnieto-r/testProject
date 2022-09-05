@@ -16,8 +16,6 @@ class FragmentBlank : Fragment() {
     override fun onResume() {
         super.onResume()
         fab_createUser.setOnClickListener {
-            Log.d("INFO", (this.requireActivity().applicationContext
-                    as MyApplication).myService?.internalContacts?.size.toString())
             val dialog = EditTextDialog()
             dialog.show(
                 requireActivity().supportFragmentManager,

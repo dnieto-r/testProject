@@ -6,8 +6,11 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.fragmentstest.models.User
+import io.reactivex.rxjava3.core.Single
 
 interface Storage {
+
+    fun getRxUser(): Single<List<User>>
 
     fun getUsers(): List<User>
 
