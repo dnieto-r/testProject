@@ -7,7 +7,6 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
 import com.example.fragmentstest.AIDLStore
-import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.CustomCallback
@@ -18,27 +17,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers.io
 class AIDLStorage(
     private val applicationContext: Context
 ) : Storage {
-    var myService: AIDLStore? = null
-
-    private val mConnection: ServiceConnection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            myService = AIDLStore.Stub.asInterface(service)
-        }
-
-        override fun onServiceDisconnected(className: ComponentName) {
-            myService = null
-        }
-    }
+    private var myService: AIDLStore? = null
 
     private fun initialize() {
-        val i = Intent()
-
-        i.setClassName("com.example.fragmentstest",
-            "com.example.fragmentstest.services.AIDLService")
-
-        applicationContext.bindService(i,
-            mConnection,
-            Context.BIND_AUTO_CREATE)
+        myService = AIDLObject.newInstance(applicationContext)
     }
 
     override fun getRxUser(): Single<List<User>> {
@@ -80,4 +62,38 @@ class AIDLStorage(
         DataMemoryAbstraction.usersReference.remove(user)
     }
 
+}
+
+class AIDLObject {
+    companion object {
+        var myService: AIDLStore? = null
+
+        private val mConnection: ServiceConnection = object : ServiceConnection {
+            override fun onServiceConnected(className: ComponentName, service: IBinder) {
+                myService = AIDLStore.Stub.asInterface(service)
+            }
+
+            override fun onServiceDisconnected(className: ComponentName) {
+                myService = null
+            }
+        }
+
+        fun newInstance(applicationContext: Context): AIDLStore? {
+            if (myService == null) {
+                val i = Intent()
+
+                i.setClassName(
+                    "com.example.fragmentstest",
+                    "com.example.fragmentstest.services.AIDLService"
+                )
+
+                applicationContext.bindService(
+                    i,
+                    mConnection,
+                    Context.BIND_AUTO_CREATE
+                )
+            }
+            return myService
+        }
+    }
 }

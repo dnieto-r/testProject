@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         (application as MyApplication).myDatabase
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

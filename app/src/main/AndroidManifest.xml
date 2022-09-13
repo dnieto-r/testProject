@@ -29,7 +29,7 @@
                 <action android:name="AIDLService"></action>
             </intent-filter>
         </service>
-
+        <service android:name=".services.ContactsIntentService"></service>
         <activity
             android:name=".MainActivity"
             android:exported="true">
