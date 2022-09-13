@@ -24,7 +24,7 @@ class SelectOptionDialog : DialogFragment() {
 
         registerButtonEvents()
 
-        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
         return dialog
     }

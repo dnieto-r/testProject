@@ -9,17 +9,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
+import com.example.fragmentstest.interactors.EditUserUseCase
+import com.example.fragmentstest.interactors.RemoveUserUserCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.adapters.GroupsAdapter
+import com.example.fragmentstest.presenters.FragmentDisplayPresenter
+import com.example.fragmentstest.presenters.SelectGroupDialogPresenter
+import com.example.fragmentstest.views.SelectGroupDialogView
 
-class SelectGroupDialog : DialogFragment() {
+class SelectGroupDialog : DialogFragment(), SelectGroupDialogView {
 
     private val myStorage: Storage by lazy {
         (this.context?.applicationContext as MyApplication).myDatabase
     }
 
+    private val presenter: SelectGroupDialogPresenter by lazy {
+        SelectGroupDialogPresenter(
+            this
+        )
+    }
+
     private val groupsAdapter by lazy {
-        val adapter = GroupsAdapter(requireActivity().supportFragmentManager, this)
+        val adapter = GroupsAdapter(presenter)
         adapter.groupList = myStorage.getGroups().drop(1)
         adapter
     }
@@ -43,9 +54,19 @@ class SelectGroupDialog : DialogFragment() {
             adapter = groupsAdapter
         }
 
-        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
         return dialog
+    }
+
+    override fun onSelectGroup(groupPosition: Int) {
+        val newEditGroupFragment = EditGroupDialog()
+        val args = Bundle()
+
+        args.putInt("position", groupPosition)
+        newEditGroupFragment.arguments = args
+        dismiss()
+        newEditGroupFragment.show(requireActivity().supportFragmentManager, "editGroup")
     }
 
 }

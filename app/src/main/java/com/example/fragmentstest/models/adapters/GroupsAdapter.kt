@@ -13,13 +13,12 @@ import com.example.fragmentstest.dialogs.SelectGroupDialog
 import com.example.fragmentstest.models.Group
 import com.example.fragmentstest.models.MyDiffUtil
 import com.example.fragmentstest.models.MyViewHolderGroup
+import com.example.fragmentstest.presenters.SelectGroupDialogPresenter
 import kotlin.properties.Delegates
 
 class GroupsAdapter(
-    var fragmentManager: FragmentManager,
-    var selectGroupDialog: SelectGroupDialog
+    private val presenter: SelectGroupDialogPresenter
 ) : RecyclerView.Adapter<MyViewHolderGroup>() {
-    var selectedRow = -1
     var groupList: List<Group> by Delegates.observable(emptyList()) { _, old, new ->
         val diffUtil = MyDiffUtil(old, new)
         val diffResults = DiffUtil.calculateDiff(diffUtil)
@@ -44,15 +43,9 @@ class GroupsAdapter(
             R.layout.row_group,
             parent, false
         )
-        val newEditGroupFragment = EditGroupDialog()
 
         view.setOnClickListener {
-            selectedRow = viewType
-            val args = Bundle()
-            args.putInt("position", viewType + 1)
-            newEditGroupFragment.arguments = args
-            selectGroupDialog.dismiss()
-            newEditGroupFragment.show(fragmentManager, "editGroup")
+            presenter.selectGroup(viewType + 1)
         }
         return MyViewHolderGroup(
             view = view
