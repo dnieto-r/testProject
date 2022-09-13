@@ -20,14 +20,14 @@ import javax.inject.Singleton
 class AppModule {
 
     @Provides
-    internal fun provideContext(application: MyApplication): Context =
-        application.applicationContext
-
-    @Provides
-    internal fun provideApplication(application: MyApplication):
+    fun provideApplication(application: MyApplication):
             Application = application
 
     @Provides
-    internal fun provideStorage(): Storage = LocalStorage()
+    fun provideContext(application: MyApplication): Context =
+        application.applicationContext
+
+    @Provides
+    fun provideStorage(): Storage = LocalStorage()
 
 }

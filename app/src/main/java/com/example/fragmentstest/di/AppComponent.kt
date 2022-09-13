@@ -2,7 +2,7 @@ package com.example.fragmentstest.di
 
 import android.content.Context
 import com.example.fragmentstest.MyApplication
-import com.example.fragmentstest.di.modules.FragmentListModule
+import com.example.fragmentstest.di.modules.FragmentDisplayModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
