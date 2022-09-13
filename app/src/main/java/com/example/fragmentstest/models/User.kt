@@ -10,7 +10,7 @@ data class User(
     var address: String,
     var photo: Int,
     var isFavorite: Boolean
-) : Serializable
+) : Serializable, ListableObject
 
 fun User.toDao() = UserEntity(
     id = id,
