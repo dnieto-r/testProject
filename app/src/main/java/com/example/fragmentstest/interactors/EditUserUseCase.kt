@@ -1,12 +1,12 @@
 package com.example.fragmentstest.interactors
 
-import com.example.fragmentstest.interfaces.EditUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
+import javax.inject.Inject
 
-class EditUserUseCase(val myStorage: Storage) : EditUserUseCase {
+class EditUserUseCase @Inject constructor(private val myStorage: Storage) {
 
-    override fun editUser(position: Int, user: User) {
+    fun editUser(user: User) {
         myStorage.editUser(user)
     }
 

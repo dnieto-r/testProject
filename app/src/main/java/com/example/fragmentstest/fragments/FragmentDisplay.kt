@@ -2,33 +2,35 @@ package com.example.fragmentstest.fragments
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import com.example.fragmentstest.MainActivity
 import com.example.fragmentstest.models.User
-import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
-import com.example.fragmentstest.interactors.EditUserUseCase
-import com.example.fragmentstest.interactors.RemoveUserUserCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.presenters.FragmentDisplayPresenter
 import com.example.fragmentstest.views.FragmentDisplayView
 import com.example.fragmentstest.views.MainActivityView
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_display.*
+import javax.inject.Inject
 
-class FragmentDisplay : Fragment(), FragmentDisplayView {
+class FragmentDisplay : DaggerFragment(), FragmentDisplayView {
 
-    private val mainActivityView: MainActivityView by lazy { activity as MainActivity }
+    @Inject
+    lateinit var myStorage: Storage
+
+    @Inject
+    lateinit var presenter: FragmentDisplayPresenter
+
+    private val mainActivityView: MainActivityView
+            by lazy { activity as MainActivity }
 
     var isFavorite: Boolean = false
     private var isEdited: Boolean = false
     var isUserSelected: Boolean = false
-
-    lateinit var myStorage: Storage
-    lateinit var presenter: FragmentDisplayPresenter
 
     companion object {
         fun newInstance(user: User, position: Int): FragmentDisplay {
@@ -41,15 +43,6 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
 
             return f
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        myStorage = (this.context?.applicationContext as MyApplication).myDatabase
-        presenter = FragmentDisplayPresenter(
-            this, EditUserUseCase(myStorage),
-            RemoveUserUserCase(myStorage)
-        )
     }
 
     override fun onResume() {
@@ -109,7 +102,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
                     user.photo,
                     isFavorite
                 )
-                presenter.editUser(newUser, position)
+                presenter.editUser(newUser)
             } else {
                 AlertDialog.Builder(this.requireContext())
                     .setTitle(R.string.delete_contact)

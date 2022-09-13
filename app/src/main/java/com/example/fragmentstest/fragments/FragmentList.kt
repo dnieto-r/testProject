@@ -10,31 +10,32 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fragmentstest.MainActivity
 import com.example.fragmentstest.models.CustomAdapter
 import com.example.fragmentstest.models.User
-import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interactors.SearchUsersUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.presenters.FragmentListPresenter
 import com.example.fragmentstest.views.FragmentListView
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
+import javax.inject.Inject
 
-class FragmentList : Fragment(), FragmentListView {
-    private val customAdapter by lazy { CustomAdapter(::onSelectUser) }
+class FragmentList : DaggerFragment(), FragmentListView {
 
-    private val myStorage: Storage by lazy {
-        (this.context?.applicationContext as MyApplication).myDatabase
-    }
+    @Inject
+    lateinit var myStorage: Storage
+
     private val presenter: FragmentListPresenter by lazy {
         FragmentListPresenter(
             this, (activity as MainActivity),
             SearchUsersUseCase(myStorage)
         )
     }
+
+    private val customAdapter by lazy { CustomAdapter(::onSelectUser) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
