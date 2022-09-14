@@ -3,6 +3,7 @@ package com.example.fragmentstest.databases
 import android.content.Context
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.Group
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -76,5 +77,23 @@ class FileStorage @Inject constructor(
         fos.close()
         oos.close();
     }
+
+    override fun createGroup(group: Group) {}
+
+    override fun getGroups(): List<Group> {
+        return emptyList()
+    }
+
+    override fun removeGroup(group: Group) {}
+
+    override fun addUserToGroup(userId: String, groupId: Int) {}
+
+    override fun getGroup(userId: String): Group {
+        return Group(0, "Sin Grupo")
+    }
+
+    override fun updateUserGroup(userId: String, groupId: Int) {}
+
+    override fun updateGroup(group: Group) {}
 
 }

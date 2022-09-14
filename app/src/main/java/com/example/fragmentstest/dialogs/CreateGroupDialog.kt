@@ -12,40 +12,30 @@ import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interfaces.Storage
-import javax.inject.Inject
+import com.example.fragmentstest.models.Group
 
-class EditTextDialog : DialogFragment() {
+class CreateGroupDialog : DialogFragment() {
 
-    @Inject
-    lateinit var myStorage: Storage
+    private val myStorage: Storage by lazy {
+        (this.context?.applicationContext as MyApplication).myDatabase
+    }
 
     private lateinit var etName: EditText
-    private lateinit var etNumber: EditText
-    private lateinit var etAddress: EditText
     private var onCancel: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var view = requireActivity().layoutInflater.inflate(R.layout.dialog_edit_text, null)
+        var view = requireActivity().layoutInflater.inflate(R.layout.dialog_create_group, null)
 
         etName = view.findViewById(R.id.et_name)
-        etNumber = view.findViewById(R.id.et_phone)
-        etAddress = view.findViewById(R.id.et_address)
 
         val builder = AlertDialog.Builder(requireContext())
             .setView(view)
             .setPositiveButton(getString(R.string.create)) { _, _ ->
                 val name = etName.text.toString()
-                val number = etNumber.text.toString()
-                val address = etAddress.text.toString()
-                if (name != "" && number != "" && address != "") {
-                    var user = User(
-                        myStorage.getUsers()?.size.toString(),
-                        etName.text.toString(),
-                        etNumber.text.toString(),
-                        etAddress.text.toString(),
-                        R.drawable.ic_launcher_background, false
-                    )
-                    (activity as MainActivity).addUser(user)
+                if (name != "") {
+                    val newId: Int = myStorage.getGroups().size
+                    val group = Group(newId, name)
+                    myStorage.createGroup(group)
                 } else {
                     Toast.makeText(
                         this.requireActivity().applicationContext,

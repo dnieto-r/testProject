@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.Group
 
 class LocalDBStorage(
     applicationContext: Context
@@ -107,5 +108,23 @@ class LocalDBStorage(
         p0?.execSQL(DBData.SQL_DELETE_ENTRIES)
         onCreate(p0)
     }
+
+    override fun createGroup(group: Group) {}
+
+    override fun getGroups(): List<Group> {
+        return emptyList()
+    }
+
+    override fun removeGroup(group: Group) {}
+
+    override fun addUserToGroup(userId: String, groupId: Int) {}
+
+    override fun getGroup(userId: String): Group {
+            return Group(0, "Sin Grupo")
+    }
+
+    override fun updateUserGroup(userId: String, groupId: Int) {}
+
+    override fun updateGroup(group: Group) {}
 
 }

@@ -10,6 +10,7 @@ class AddUserUseCase @Inject constructor(
 
     fun addUser(user: User) {
         myStorage.addUser(user)
+        myStorage.addUserToGroup(user.id, 0)
     }
 
 }

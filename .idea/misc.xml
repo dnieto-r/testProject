@@ -4,11 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_create_group.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/dialog_edit_text.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_display.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_select_group.xml" value="0.16032608695652173" />
+        <entry key="app/src/main/res/layout/dialog_select_option.xml" value="0.16032608695652173" />
+        <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.11170212765957446" />
+        <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_display.xml" value="0.27655792236328125" />
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_group.xml" value="0.16032608695652173" />
         <entry key="app/src/main/res/layout/row_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_user.xml" value="0.15885416666666666" />
       </map>
     </option>
   </component>

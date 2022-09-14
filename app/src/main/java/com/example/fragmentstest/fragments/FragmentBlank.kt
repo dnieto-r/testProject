@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
+import com.example.fragmentstest.dialogs.CreateGroupDialog
 import com.example.fragmentstest.dialogs.EditTextDialog
+import com.example.fragmentstest.dialogs.SelectOptionDialog
 import kotlinx.android.synthetic.main.fragment_blank.*
 
 class FragmentBlank : Fragment() {
@@ -19,6 +21,13 @@ class FragmentBlank : Fragment() {
             dialog.show(
                 requireActivity().supportFragmentManager,
                 "editDescription"
+            )
+        }
+        fab_createGroup.setOnClickListener {
+            val dialog = SelectOptionDialog()
+            dialog.show(
+                requireActivity().supportFragmentManager,
+                "selectOption"
             )
         }
     }

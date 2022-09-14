@@ -2,6 +2,7 @@ package com.example.fragmentstest.databases
 
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.Group
 
 class LocalStorage : Storage {
 
@@ -24,5 +25,23 @@ class LocalStorage : Storage {
     override fun removeUser(user: User) {
         DataMemoryAbstraction.usersReference.remove(user)
     }
+
+    override fun createGroup(group: Group) {}
+
+    override fun getGroups(): List<Group> {
+        return emptyList()
+    }
+
+    override fun removeGroup(group: Group) {}
+
+    override fun addUserToGroup(userId: String, groupId: Int) {}
+
+    override fun getGroup(userId: String): Group {
+        return Group(0, "Sin Grupo")
+    }
+
+    override fun updateUserGroup(userId: String, groupId: Int) {}
+
+    override fun updateGroup(group: Group) {}
 
 }

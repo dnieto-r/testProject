@@ -1,5 +1,6 @@
 package com.example.fragmentstest.interactors
 
+import com.example.fragmentstest.interfaces.useCases.EditUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 import javax.inject.Inject

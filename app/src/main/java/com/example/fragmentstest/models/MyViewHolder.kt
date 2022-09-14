@@ -3,7 +3,7 @@ package com.example.fragmentstest.models
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.row_main.view.*
+import kotlinx.android.synthetic.main.row_user.view.*
 
 class MyViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 

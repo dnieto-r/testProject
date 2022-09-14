@@ -1,6 +1,6 @@
 package com.example.fragmentstest.models
 
-import com.example.fragmentstest.interfaces.UserDao
+import com.example.fragmentstest.models.entities.UserEntity
 import java.io.Serializable
 
 data class User(
@@ -10,7 +10,7 @@ data class User(
     var address: String,
     var photo: Int,
     var isFavorite: Boolean
-) : Serializable
+) : Serializable, ListableObject
 
 fun User.toDao() = UserEntity(
     id = id,

@@ -12,7 +12,7 @@ import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fragmentstest.MainActivity
-import com.example.fragmentstest.models.CustomAdapter
+import com.example.fragmentstest.models.adapters.UsersAdapter
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interactors.SearchUsersUseCase
@@ -23,6 +23,7 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
+    private val customAdapter by lazy { UsersAdapter(::onSelectUser) }
 class FragmentList : DaggerFragment(), FragmentListView {
 
     @Inject
@@ -76,7 +77,7 @@ class FragmentList : DaggerFragment(), FragmentListView {
                 Log.d("After Text Changed: ", s.toString())
             }
         })
-        et_searchbar.setOnTouchListener(OnTouchListener { v, event ->
+        et_searchbar.setOnTouchListener(OnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= et_searchbar.right -
                     et_searchbar.compoundDrawables[2].bounds.width()

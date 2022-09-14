@@ -1,9 +1,9 @@
-package com.example.fragmentstest.models
+package com.example.fragmentstest.models.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
+import com.example.fragmentstest.models.User
 
 @Entity(tableName = "usersList")
 class UserEntity(
@@ -12,7 +12,7 @@ class UserEntity(
     @ColumnInfo(name = "number") var number: String,
     @ColumnInfo(name = "address") var address: String,
     @ColumnInfo(name = "photo") var photo: Int,
-    @ColumnInfo(name = "isFavorite") var isFavorite: Boolean
+    @ColumnInfo(name = "isFavorite") var isFavorite: Boolean,
 )
 
 fun UserEntity.toDC() = User(
