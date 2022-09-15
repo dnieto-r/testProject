@@ -23,13 +23,17 @@ class SelectGroupDialogFragment : DaggerDialogFragment(), SelectGroupDialogView 
     lateinit var presenter: SelectGroupDialogPresenter
 
     private val groupsAdapter by lazy {
-        val adapter = GroupsAdapter(presenter)
+        val adapter = GroupsAdapter(onSelectGroup)
         adapter.groupList = myStorage.getGroups().drop(1)
         adapter
     }
 
     private var onCancel: (() -> Unit)? = null
     private lateinit var rvGroups: RecyclerView
+
+    private var onSelectGroup: ((Int) -> Unit)? = { it ->
+        presenter.selectGroup(it)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = requireActivity().layoutInflater.inflate(R.layout.dialog_select_group, null)

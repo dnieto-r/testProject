@@ -13,7 +13,7 @@ import com.example.fragmentstest.presenters.SelectGroupDialogPresenter
 import kotlin.properties.Delegates
 
 class GroupsAdapter(
-    private val presenter: SelectGroupDialogPresenter
+    private val onSelectGroupCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<MyViewHolderGroup>() {
 
     var groupList: List<Group> by Delegates.observable(emptyList()) { _, old, new ->
@@ -42,7 +42,7 @@ class GroupsAdapter(
         )
 
         view.setOnClickListener {
-            presenter.selectGroup(viewType + 1)
+            onSelectGroupCallback?.invoke(viewType + 1)
         }
         return MyViewHolderGroup(
             view = view
