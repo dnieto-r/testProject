@@ -24,9 +24,7 @@ class IntentServiceStorage(
             startServiceForDataRecovery(
                 resultReceiverCallBack = object : DataReceiverCallBack {
                     override fun onSuccess(data: Bundle) {
-                        var usersList = data.getParcelableArrayList<User>("contacts") as List<User>
-                        Log.d("INFO", usersList[0].toString())
-                        emitter.onSuccess(usersList)
+                        emitter.onSuccess(data.getParcelableArrayList<User>("contacts") as List<User>)
                     }
 
                     override fun onError(exception: Exception) {
