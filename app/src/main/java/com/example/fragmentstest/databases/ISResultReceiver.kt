@@ -36,7 +36,7 @@ class ISResultReceiver(private val callBack: DataReceiverCallBack) :
                 callBack.onError(exception)
             }
             else -> {
-                callBack.onError(java.lang.Exception("Unknown exception - cannot fetch legacy iot service data"))
+                callBack.onError(java.lang.Exception("Unknown exception"))
             }
         }
     }
