@@ -54,7 +54,6 @@ class ShowContactNotificationUseCase(private val context: Context,
     fun execute() {
         myDatabase.getRxUser().observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
-                Log.d("INFORMACIONM", it.toString())
                 createNotificationChannel()
                 updateNotification(it)
             }

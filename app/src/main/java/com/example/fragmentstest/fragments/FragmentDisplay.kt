@@ -14,6 +14,7 @@ import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
 import com.example.fragmentstest.databases.AIDLStorage
+import com.example.fragmentstest.databases.IntentServiceStorage
 import com.example.fragmentstest.interactors.EditUserUseCase
 import com.example.fragmentstest.interactors.RemoveUserUserCase
 import com.example.fragmentstest.interfaces.Storage
@@ -73,7 +74,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         else
             btn_fav.setText(R.string.add_fav)
 
-        if (myStorage is AIDLStorage) {
+        if (myStorage is AIDLStorage || myStorage is IntentServiceStorage) {
             myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     users = it

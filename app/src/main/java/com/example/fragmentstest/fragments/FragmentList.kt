@@ -18,6 +18,7 @@ import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
 import com.example.fragmentstest.databases.AIDLStorage
+import com.example.fragmentstest.databases.IntentServiceStorage
 import com.example.fragmentstest.interactors.SearchUsersUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.presenters.FragmentListPresenter
@@ -52,7 +53,7 @@ class FragmentList : Fragment(), FragmentListView {
     }
 
     override fun setupList() {
-        if (myStorage is AIDLStorage) {
+        if (myStorage is AIDLStorage || myStorage is IntentServiceStorage) {
             myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     customAdapter.usersList = it
@@ -130,7 +131,7 @@ class FragmentList : Fragment(), FragmentListView {
     }
 
     private fun reloadUsers() {
-        if (myStorage is AIDLStorage) {
+        if (myStorage is AIDLStorage || myStorage is IntentServiceStorage) {
             myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     customAdapter.usersList = it

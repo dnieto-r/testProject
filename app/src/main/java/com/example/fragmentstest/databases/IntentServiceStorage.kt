@@ -3,27 +3,51 @@ package com.example.fragmentstest.databases
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import com.example.fragmentstest.models.User
 import com.example.fragmentstest.services.ContactsIntentService
 import io.reactivex.rxjava3.core.Single
+import android.os.Bundle
+import com.telefonica.movistarhome.iot.light.model.legacy.DataReceiverCallBack
+import com.telefonica.movistarhome.iot.light.model.legacy.ISResultReceiver
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+
 
 class IntentServiceStorage(
     private val applicationContext: Context
 ) : Storage {
     private var myService: Intent? = null
 
-    private fun initialize() {
+    fun getContacts(): Single<List<User>> =
+        Single.create { emitter ->
+            startServiceForDataRecovery(
+                resultReceiverCallBack = object : DataReceiverCallBack {
+                    override fun onSuccess(data: Bundle) {
+                        var usersList = data.getParcelableArrayList<User>("contacts") as List<User>
+                        Log.d("INFO", usersList[0].toString())
+                        emitter.onSuccess(usersList)
+                    }
+
+                    override fun onError(exception: Exception) {
+                        emitter.onError(exception)
+                    }
+                })
+        }
+
+    private fun startServiceForDataRecovery(
+        resultReceiverCallBack: DataReceiverCallBack
+    ) {
+        val isResultReceiver = ISResultReceiver(resultReceiverCallBack)
         myService = IntentServiceObject.newInstance(applicationContext)
+        myService?.putExtra("key.contactsIntentService", isResultReceiver)
+        applicationContext.startService(myService);
     }
 
+
     override fun getRxUser(): Single<List<User>> {
-        initialize()
-
-        Log.d("INFO", myService.toString())
-        (myService as ContactsIntentService).getMobileContacts()
-
-        return Single.fromCallable{emptyList()}
+        return getContacts().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getUsers(): List<User> {
