@@ -23,8 +23,8 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
-    private val customAdapter by lazy { UsersAdapter(::onSelectUser) }
 class FragmentList : DaggerFragment(), FragmentListView {
+    private val customAdapter by lazy { UsersAdapter(::onSelectUser) }
 
     @Inject
     lateinit var myStorage: Storage
@@ -35,8 +35,6 @@ class FragmentList : DaggerFragment(), FragmentListView {
             SearchUsersUseCase(myStorage)
         )
     }
-
-    private val customAdapter by lazy { CustomAdapter(::onSelectUser) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

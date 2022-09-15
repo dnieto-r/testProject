@@ -15,7 +15,10 @@ import com.example.fragmentstest.views.MainActivityView
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-class MainActivity @Inject constructor() : AppCompatActivity(), MainActivityView {
+class MainActivity @Inject constructor() : DaggerAppCompatActivity(), MainActivityView {
+
+    @Inject
+    lateinit var myStorage: Storage
 
     @Inject
     lateinit var presenter: MainActivityPresenter

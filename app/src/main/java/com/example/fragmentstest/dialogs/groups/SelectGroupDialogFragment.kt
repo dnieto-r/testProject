@@ -1,33 +1,26 @@
-package com.example.fragmentstest.dialogs
+package com.example.fragmentstest.dialogs.groups
 
 import android.app.Dialog
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
-import com.example.fragmentstest.interactors.EditUserUseCase
-import com.example.fragmentstest.interactors.RemoveUserUserCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.adapters.GroupsAdapter
-import com.example.fragmentstest.presenters.FragmentDisplayPresenter
 import com.example.fragmentstest.presenters.SelectGroupDialogPresenter
 import com.example.fragmentstest.views.SelectGroupDialogView
+import dagger.android.support.DaggerDialogFragment
+import javax.inject.Inject
 
-class SelectGroupDialog : DialogFragment(), SelectGroupDialogView {
+class SelectGroupDialogFragment : DaggerDialogFragment(), SelectGroupDialogView {
 
-    private val myStorage: Storage by lazy {
-        (this.context?.applicationContext as MyApplication).myDatabase
-    }
+    @Inject
+    lateinit var myStorage: Storage
 
-    private val presenter: SelectGroupDialogPresenter by lazy {
-        SelectGroupDialogPresenter(
-            this
-        )
-    }
+    @Inject
+    lateinit var presenter: SelectGroupDialogPresenter
 
     private val groupsAdapter by lazy {
         val adapter = GroupsAdapter(presenter)
@@ -60,7 +53,7 @@ class SelectGroupDialog : DialogFragment(), SelectGroupDialogView {
     }
 
     override fun onSelectGroup(groupPosition: Int) {
-        val newEditGroupFragment = EditGroupDialog()
+        val newEditGroupFragment = EditGroupDialogFragment()
         val args = Bundle()
 
         args.putInt("position", groupPosition)

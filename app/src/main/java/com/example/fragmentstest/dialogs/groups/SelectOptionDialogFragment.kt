@@ -1,4 +1,4 @@
-package com.example.fragmentstest.dialogs
+package com.example.fragmentstest.dialogs.groups
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.fragmentstest.R
 
-class SelectOptionDialog : DialogFragment() {
+class SelectOptionDialogFragment : DialogFragment() {
     private lateinit var tnCreateGroup: Button
     private lateinit var tnEditGroup: Button
 
@@ -31,7 +31,7 @@ class SelectOptionDialog : DialogFragment() {
 
     private fun registerButtonEvents() {
         tnCreateGroup.setOnClickListener {
-            val createGroupDialog = CreateGroupDialog()
+            val createGroupDialog = CreateGroupDialogFragment()
             createGroupDialog.show(
                 requireActivity().supportFragmentManager,
                 "createGroup"
@@ -39,7 +39,7 @@ class SelectOptionDialog : DialogFragment() {
             dismiss()
         }
         tnEditGroup.setOnClickListener {
-            val createGroupDialog = SelectGroupDialog()
+            val createGroupDialog = SelectGroupDialogFragment()
             createGroupDialog.show(
                 requireActivity().supportFragmentManager,
                 "selectGroup"

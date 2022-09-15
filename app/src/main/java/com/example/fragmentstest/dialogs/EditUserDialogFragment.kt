@@ -12,9 +12,10 @@ import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interfaces.Storage
+import dagger.android.support.DaggerDialogFragment
 import javax.inject.Inject
 
-class EditTextDialog : DialogFragment() {
+class EditUserDialogFragment : DaggerDialogFragment() {
 
     @Inject
     lateinit var myStorage: Storage

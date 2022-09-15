@@ -8,8 +8,9 @@ import com.example.fragmentstest.models.User
 import com.example.fragmentstest.models.entities.UserGroupEntity
 import com.example.fragmentstest.models.toDao
 import com.example.fragmentstest.models.entities.toDC
+import javax.inject.Inject
 
-class RoomLocalDBStorage(
+class RoomLocalDBStorage @Inject constructor(
     applicationContext: Context
 ) : Storage {
     private val db by lazy {

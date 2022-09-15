@@ -14,7 +14,7 @@ import javax.inject.Singleton
     AndroidInjectionModule::class,
     AppModule::class,
     FragmentBuilder::class,
-    FragmentDisplayModule::class
+    ActivityBuilder::class
 ])
 interface AppComponent : AndroidInjector<MyApplication> {
 

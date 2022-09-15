@@ -4,8 +4,6 @@ import android.util.Log
 import com.example.fragmentstest.interactors.EditUserUseCase
 import com.example.fragmentstest.interactors.RemoveUserUseCase
 import com.example.fragmentstest.models.User
-import com.example.fragmentstest.interfaces.useCases.EditUserUseCase
-import com.example.fragmentstest.interfaces.useCases.RemoveUserUseCase
 import com.example.fragmentstest.views.FragmentDisplayView
 import javax.inject.Inject
 

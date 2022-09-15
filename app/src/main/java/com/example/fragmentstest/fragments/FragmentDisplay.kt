@@ -7,12 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import com.example.fragmentstest.MainActivity
-import com.example.fragmentstest.models.User
-import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
