@@ -47,7 +47,7 @@ class ShowContactNotificationUseCase(private val context: Context,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             val manager: NotificationManager? = context.getSystemService(NotificationManager::class.java)
-            manager!!.createNotificationChannel(serviceChannel)
+            manager?.createNotificationChannel(serviceChannel)
         }
     }
 
