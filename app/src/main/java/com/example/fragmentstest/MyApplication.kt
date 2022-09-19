@@ -9,7 +9,7 @@ import com.example.fragmentstest.interfaces.Storage
 class MyApplication : Application() {
 
     val myDatabase: Storage by lazy {
-        IntentServiceStorage(this) // Change this line to change the storage type
+        AIDLStorage(this) // Change this line to change the storage type
     }
 
     override fun onCreate() {
