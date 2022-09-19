@@ -15,7 +15,7 @@ class MainActivityPresenter(
     fun addUser(user: User) {
         Log.d("INFO", "Añadiendo el usuario $user...")
         AddUserUseCase.addUser(user).observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it ->
+            .subscribe {
                 displayView?.onCreateUser()
             }
     }

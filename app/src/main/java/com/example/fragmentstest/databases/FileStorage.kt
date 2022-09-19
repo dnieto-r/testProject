@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.EOFException
@@ -28,13 +29,11 @@ class FileStorage(
 
     override fun getRxUser(): Single<List<User>> {
         try {
-            var usersList = emptyList<User>()
-
             val fis = FileInputStream(file);
             val ois = ObjectInputStream(fis);
 
             var res = ois.readObject()
-            usersList = res as List<User>
+            var usersList = res as List<User>
 
             fis.close()
             ois.close()
@@ -51,8 +50,8 @@ class FileStorage(
         return Single.fromCallable{ emptyList() }
     }
 
-    override fun editUser(user: User): Single<List<User>> {
-        return getRxUser()
+    override fun editUser(user: User): Completable {
+        getRxUser()
             .map { it ->
                 val fos = FileOutputStream(file);
                 val oos = ObjectOutputStream(fos);
@@ -69,10 +68,12 @@ class FileStorage(
 
                 tempUserList
             }
+        return Completable.complete()
+
     }
 
-    override fun addUser(user: User): Single<List<User>> {
-        return getRxUser()
+    override fun addUser(user: User): Completable {
+        getRxUser()
             .map { it ->
                 val fos = FileOutputStream(file);
                 val oos = ObjectOutputStream(fos);
@@ -83,13 +84,13 @@ class FileStorage(
                 oos.writeObject(tempUserList);
                 fos.close()
                 oos.close()
-
-                tempUserList
             }
+        return Completable.complete()
+
     }
 
-    override fun removeUser(user: User): Single<List<User>> {
-        return getRxUser()
+    override fun removeUser(user: User): Completable {
+        getRxUser()
             .map { it ->
                 val fos = FileOutputStream(file);
                 val oos = ObjectOutputStream(fos);
@@ -101,9 +102,9 @@ class FileStorage(
 
                 fos.close()
                 oos.close();
-
-                tempUserList
             }
+
+        return Completable.complete()
     }
 
 }

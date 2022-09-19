@@ -9,6 +9,7 @@ import com.example.fragmentstest.interfaces.Storage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -44,8 +45,8 @@ class SharedPrefsStorage(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun addUser(user: User): Single<List<User>> {
-        return getRxUser()
+    override fun addUser(user: User): Completable {
+        getRxUser()
             .map {
                 val tempUserList = it.toMutableList()
 
@@ -53,10 +54,11 @@ class SharedPrefsStorage(
                 saveList(tempUserList)
                 tempUserList
             }
+        return Completable.complete()
     }
 
-    override fun editUser(user: User): Single<List<User>> {
-        return getRxUser()
+    override fun editUser(user: User): Completable {
+        getRxUser()
             .map { it ->
                 val selectedUser = it.find { it.id == user.id }
                 val tempUserList = it.toMutableList()
@@ -65,19 +67,19 @@ class SharedPrefsStorage(
                 tempUserList.add(user)
                 tempUserList.sortBy { it.name }
                 saveList(tempUserList)
-                tempUserList
             }
+        return Completable.complete()
     }
 
-    override fun removeUser(user: User): Single<List<User>> {
-        return getRxUser().map { it ->
+    override fun removeUser(user: User): Completable{
+        getRxUser().map { it ->
             val tempUserList = it.toMutableList()
 
             tempUserList.remove(user)
             tempUserList.sortBy { it.name }
             saveList(tempUserList)
-            tempUserList
         }
+        return Completable.complete()
     }
 
     private fun saveList(usersList: List<User>) {

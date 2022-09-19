@@ -116,7 +116,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
                     user.photo,
                     isFavorite
                 )
-                presenter.editUser(newUser, position)
+                presenter.editUser(newUser)
             } else {
                 AlertDialog.Builder(this.requireContext())
                     .setTitle(R.string.delete_contact)

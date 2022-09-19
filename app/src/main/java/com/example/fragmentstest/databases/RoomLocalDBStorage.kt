@@ -7,6 +7,7 @@ import com.example.fragmentstest.models.User
 import com.example.fragmentstest.models.toDC
 import com.example.fragmentstest.models.toDao
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -30,22 +31,22 @@ class RoomLocalDBStorage(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun editUser(user: User): Single<List<User>> {
+    override fun editUser(user: User): Completable {
         val userDao = db.userDao()
         userDao.editUser(user.toDao())
-        return Single.fromCallable { emptyList() }
+        return Completable.complete()
     }
 
-    override fun addUser(user: User): Single<List<User>> {
+    override fun addUser(user: User): Completable {
         val userDao = db.userDao()
         userDao.addUser(user.toDao())
-        return Single.fromCallable { emptyList() }
+        return Completable.complete()
     }
 
-    override fun removeUser(user: User): Single<List<User>> {
+    override fun removeUser(user: User): Completable {
         val userDao = db.userDao()
         userDao.removeUser(user.toDao())
-        return Single.fromCallable { emptyList() }
+        return Completable.complete()
     }
 
 }

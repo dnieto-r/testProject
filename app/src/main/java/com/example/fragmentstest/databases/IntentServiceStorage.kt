@@ -11,6 +11,7 @@ import android.os.Bundle
 import com.telefonica.movistarhome.iot.light.model.legacy.DataReceiverCallBack
 import com.telefonica.movistarhome.iot.light.model.legacy.ISResultReceiver
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 
@@ -48,26 +49,26 @@ class IntentServiceStorage(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun editUser(user: User): Single<List<User>> {
-        this.getRxUser().observeOn(AndroidSchedulers.mainThread())
+    override fun editUser(user: User): Completable {
+        getRxUser().observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
                 val selectedUser = it.find { it.id == user.id }
                 DataMemoryAbstraction.usersReference.remove(selectedUser)
                 DataMemoryAbstraction.usersReference.add(user)
                 DataMemoryAbstraction.usersReference.sortBy { it.name }
             }
-        return Single.fromCallable{ emptyList() }
+        return Completable.complete()
     }
 
-    override fun addUser(user: User): Single<List<User>> {
+    override fun addUser(user: User): Completable {
         DataMemoryAbstraction.usersReference.add(user)
         DataMemoryAbstraction.usersReference.sortBy { it.name }
-        return Single.fromCallable{ emptyList()}
+        return Completable.complete()
     }
 
-    override fun removeUser(user: User): Single<List<User>> {
+    override fun removeUser(user: User): Completable {
         DataMemoryAbstraction.usersReference.remove(user)
-        return Single.fromCallable{ emptyList() }
+        return Completable.complete()
     }
 
 }

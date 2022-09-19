@@ -8,16 +8,16 @@ import com.example.fragmentstest.views.FragmentDisplayView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class FragmentDisplayPresenter(
-    var displayView: FragmentDisplayView?,
+    private var displayView: FragmentDisplayView?,
     private val editUserUseCase: EditUserUseCase,
     private val removeUserUseCase: RemoveUserUseCase
 ) {
 
-    fun editUser(user: User, position: Int) {
+    fun editUser(user: User) {
         Log.d("INFO", "Cambiando información del usuario...")
         editUserUseCase.editUser(user)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it ->
+            .subscribe {
                 displayView?.onEditUser()
             }
     }
@@ -26,7 +26,7 @@ class FragmentDisplayPresenter(
         Log.d("INFO", "Eliminando el usuario $user...")
         removeUserUseCase.removeUser(user)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it ->
+            .subscribe {
                 displayView?.onDeleteUser()
             }
     }

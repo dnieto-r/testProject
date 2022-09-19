@@ -9,6 +9,7 @@ import android.util.Log
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -64,7 +65,7 @@ class LocalDBStorage(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun editUser(user: User): Single<List<User>> {
+    override fun editUser(user: User): Completable {
         val values = ContentValues().apply {
             put(DBData.COLUMN_NAME_ID, user.id)
             put(DBData.COLUMN_NAME_NAME, user.name)
@@ -82,10 +83,10 @@ class LocalDBStorage(
             selection,
             selectionArgs
         )
-        return Single.fromCallable{ emptyList() }
+        return Completable.complete()
     }
 
-    override fun addUser(user: User): Single<List<User>> {
+    override fun addUser(user: User): Completable {
         val values = ContentValues().apply {
             put(DBData.COLUMN_NAME_ID, user.id)
             put(DBData.COLUMN_NAME_NAME, user.name)
@@ -96,14 +97,14 @@ class LocalDBStorage(
         }
 
         dbWrite?.insert(DBData.TABLE_NAME, null, values)
-        return Single.fromCallable{ emptyList() }
+        return Completable.complete()
     }
 
-    override fun removeUser(user: User): Single<List<User>> {
+    override fun removeUser(user: User): Completable {
         val selection = "${DBData.COLUMN_NAME_ID} LIKE ?"
         val selectionArgs = arrayOf(user.id)
         dbWrite.delete(DBData.TABLE_NAME, selection, selectionArgs)
-        return Single.fromCallable{ emptyList() }
+        return Completable.complete()
     }
 
     companion object {

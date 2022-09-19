@@ -11,6 +11,7 @@ import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.CustomCallback
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers.io
 
@@ -40,26 +41,26 @@ class AIDLStorage(
         return getUsers
     }
 
-    override fun editUser(user: User): Single<List<User>> {
-        this.getRxUser()
+    override fun editUser(user: User): Completable {
+        getRxUser()
             .map { it ->
                 val selectedUser = it.find { it.id == user.id }
                 DataMemoryAbstraction.usersReference.remove(selectedUser)
                 DataMemoryAbstraction.usersReference.add(user)
                 DataMemoryAbstraction.usersReference.sortBy { it.name }
             }
-        return Single.fromCallable{ emptyList() }
+        return Completable.complete()
     }
 
-    override fun addUser(user: User): Single<List<User>> {
+    override fun addUser(user: User): Completable {
         DataMemoryAbstraction.usersReference.add(user)
         DataMemoryAbstraction.usersReference.sortBy { it.name }
-        return Single.fromCallable{ emptyList()}
+        return Completable.complete()
     }
 
-    override fun removeUser(user: User): Single<List<User>> {
+    override fun removeUser(user: User): Completable {
         DataMemoryAbstraction.usersReference.remove(user)
-        return Single.fromCallable{ emptyList()}
+        return Completable.complete()
     }
 
 }
