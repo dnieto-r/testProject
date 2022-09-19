@@ -8,12 +8,6 @@ plugins {
 android {
     compileSdk 33
 
-    sourceSets {
-        main {
-            aidl.srcDirs = ['src/main/aidl']
-        }
-    }
-
     defaultConfig {
         applicationId "com.example.fragmentstest"
         minSdk 21
