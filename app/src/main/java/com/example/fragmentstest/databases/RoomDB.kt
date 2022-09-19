@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.fragmentstest.interfaces.UserDao
 import com.example.fragmentstest.models.UserEntity
 
-@Database(entities = [UserEntity::class], version = 1)
+@Database(entities = [UserEntity::class], version = 7)
 abstract class RoomDB : RoomDatabase() {
 
     abstract fun userDao(): UserDao

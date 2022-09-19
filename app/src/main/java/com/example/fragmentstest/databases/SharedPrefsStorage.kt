@@ -2,12 +2,15 @@ package com.example.fragmentstest.databases
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.fragmentstest.R
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class SharedPrefsStorage(
     private val activityContext: Context
@@ -27,34 +30,54 @@ class SharedPrefsStorage(
 
     private val gson by lazy { Gson() }
 
-    override fun getUsers(): MutableList<User> {
+    override fun getRxUser(): Single<List<User>> {
         val contacts: String? = sharedPref.getString("users", "")
-        return if (contacts != "")
-            gson.fromJson(contacts, type)
-        else
-            emptyList<User>().toMutableList()
+
+        return Single.fromCallable<List<User>> {
+            if (contacts != "") {
+                gson.fromJson(contacts, type) as List<User>
+            } else {
+                emptyList()
+            }
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun editUser(user: User) {
-        val users = getUsers()
-        val selectedUser = users.find { it.id == user.id }
-        users.remove(selectedUser)
-        users.add(user)
-        users.sortBy { it.name }
-        saveList(users)
+    override fun addUser(user: User): Single<List<User>> {
+        return getRxUser()
+            .map {
+                val tempUserList = it.toMutableList()
+
+                tempUserList.add(tempUserList.size, user)
+                saveList(tempUserList)
+                tempUserList
+            }
     }
 
-    override fun addUser(user: User) {
-        val usersList = getUsers()
-        usersList.add(usersList.size, user)
-        saveList(usersList)
+    override fun editUser(user: User): Single<List<User>> {
+        return getRxUser()
+            .map { it ->
+                val selectedUser = it.find { it.id == user.id }
+                val tempUserList = it.toMutableList()
+
+                tempUserList.remove(selectedUser)
+                tempUserList.add(user)
+                tempUserList.sortBy { it.name }
+                saveList(tempUserList)
+                tempUserList
+            }
     }
 
-    override fun removeUser(user: User) {
-        val usersList = getUsers()
-        usersList.remove(user)
-        usersList.sortBy { it.name }
-        saveList(usersList)
+    override fun removeUser(user: User): Single<List<User>> {
+        return getRxUser().map { it ->
+            val tempUserList = it.toMutableList()
+
+            tempUserList.remove(user)
+            tempUserList.sortBy { it.name }
+            saveList(tempUserList)
+            tempUserList
+        }
     }
 
     private fun saveList(usersList: List<User>) {
@@ -63,7 +86,4 @@ class SharedPrefsStorage(
         sharedPrefEditor.commit();
     }
 
-    override fun getRxUser(): Single<List<User>> {
-        return Single.never()
-    }
 }

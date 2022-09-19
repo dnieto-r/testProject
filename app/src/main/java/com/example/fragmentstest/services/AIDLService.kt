@@ -11,7 +11,10 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class AIDLService : Service() {
-    var contactsProvider: ContactsProvider = ContactsProvider(contentResolver)
+
+    val contactsProvider: ContactsProvider by lazy {
+        ContactsProvider(contentResolver)
+    }
 
     private val binder = object : AIDLStore.Stub() {
 

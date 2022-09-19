@@ -1,22 +1,24 @@
 package com.example.fragmentstest.presenters
 
-import android.util.Log
 import com.example.fragmentstest.interactors.SearchUsersUseCase
-import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.views.FragmentListView
 import com.example.fragmentstest.views.MainActivityView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class FragmentListPresenter(
-    var listView: FragmentListView?,
+    private var listView: FragmentListView?,
     var mainActivityView: MainActivityView?,
     private val searchUsersUseCase: SearchUsersUseCase,
 ) {
 
     fun performSearch(searchCondition: String) {
-        Log.d("INFO", "Buscando la condición $searchCondition...")
-        val users = searchUsersUseCase.getFilteredUsers(searchCondition)
-        listView?.displayFoundContacts(users)
+        this.searchUsersUseCase.getFilteredUsers(searchCondition)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { it ->
+                listView?.displayFoundContacts(it)
+            }
+
     }
 
     fun selectUser(user: User, position: Int) {

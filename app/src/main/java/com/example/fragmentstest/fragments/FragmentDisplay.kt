@@ -1,22 +1,18 @@
 package com.example.fragmentstest.fragments
 
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.example.fragmentstest.MainActivity
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.R
-import com.example.fragmentstest.databases.AIDLStorage
-import com.example.fragmentstest.databases.IntentServiceStorage
 import com.example.fragmentstest.interactors.EditUserUseCase
-import com.example.fragmentstest.interactors.RemoveUserUserCase
+import com.example.fragmentstest.interactors.RemoveUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.presenters.FragmentDisplayPresenter
 import com.example.fragmentstest.views.FragmentDisplayView
@@ -53,7 +49,7 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         myStorage = (this.context?.applicationContext as MyApplication).myDatabase
         presenter = FragmentDisplayPresenter(
             this, EditUserUseCase(myStorage),
-            RemoveUserUserCase(myStorage)
+            RemoveUserUseCase(myStorage)
         )
     }
 
@@ -74,17 +70,11 @@ class FragmentDisplay : Fragment(), FragmentDisplayView {
         else
             btn_fav.setText(R.string.add_fav)
 
-        if (myStorage is AIDLStorage || myStorage is IntentServiceStorage) {
-            myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
-                    users = it
-                    initializeEvents(users, position)
-                }
-        } else {
-            users = myStorage?.getUsers()
-            initializeEvents(users, position)
-        }
-
+        myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
+            .subscribe { it ->
+                users = it
+                initializeEvents(users, position)
+            }
     }
 
     override fun onCreateView(

@@ -1,20 +1,19 @@
 package com.example.fragmentstest.interactors
 
-import com.example.fragmentstest.interfaces.SearchUsersUseCase
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
 
-class SearchUsersUseCase(val myStorage: Storage) :
-    SearchUsersUseCase {
+class SearchUsersUseCase(val myStorage: Storage) {
 
-    override fun getFilteredUsers(searchCondition: String): List<User> {
-        return if (myStorage.getUsers() != null) {
-            myStorage.getUsers().filter {
-                it.name.toLowerCase().contains(searchCondition)
+    fun getFilteredUsers(searchCondition: String): Single<List<User>> {
+         return myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
+            .map { it ->
+                it.filter {
+                    it.name.toLowerCase().contains(searchCondition)
+                }
             }
-        } else {
-            emptyList()
-        }
     }
 }
 

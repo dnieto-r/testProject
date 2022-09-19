@@ -2,6 +2,7 @@ package com.example.fragmentstest.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
@@ -12,6 +13,8 @@ import com.example.fragmentstest.MyApplication
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.R
 import com.example.fragmentstest.interfaces.Storage
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import java.util.UUID
 
 class EditTextDialog : DialogFragment() {
 
@@ -38,8 +41,10 @@ class EditTextDialog : DialogFragment() {
                 val number = etNumber.text.toString()
                 val address = etAddress.text.toString()
                 if (name != "" && number != "" && address != "") {
+                    Log.d("INFO", "funxiona")
+
                     var user = User(
-                        myStorage.getUsers()?.size.toString(),
+                        UUID.randomUUID().toString(),
                         etName.text.toString(),
                         etNumber.text.toString(),
                         etAddress.text.toString(),

@@ -48,26 +48,26 @@ class IntentServiceStorage(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getUsers(): List<User> {
-        return emptyList()
+    override fun editUser(user: User): Single<List<User>> {
+        this.getRxUser().observeOn(AndroidSchedulers.mainThread())
+            .subscribe { it ->
+                val selectedUser = it.find { it.id == user.id }
+                DataMemoryAbstraction.usersReference.remove(selectedUser)
+                DataMemoryAbstraction.usersReference.add(user)
+                DataMemoryAbstraction.usersReference.sortBy { it.name }
+            }
+        return Single.fromCallable{ emptyList() }
     }
 
-    override fun editUser(user: User) {
-        var users = this.getUsers().toMutableList()
-
-        val selectedUser = users.find { it.id == user.id }
-        DataMemoryAbstraction.usersReference.remove(selectedUser)
+    override fun addUser(user: User): Single<List<User>> {
         DataMemoryAbstraction.usersReference.add(user)
         DataMemoryAbstraction.usersReference.sortBy { it.name }
+        return Single.fromCallable{ emptyList()}
     }
 
-    override fun addUser(user: User) {
-        DataMemoryAbstraction.usersReference.add(user)
-        DataMemoryAbstraction.usersReference.sortBy { it.name }
-    }
-
-    override fun removeUser(user: User) {
+    override fun removeUser(user: User): Single<List<User>> {
         DataMemoryAbstraction.usersReference.remove(user)
+        return Single.fromCallable{ emptyList() }
     }
 
 }

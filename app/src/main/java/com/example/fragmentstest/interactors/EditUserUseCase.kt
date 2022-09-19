@@ -1,13 +1,13 @@
 package com.example.fragmentstest.interactors
 
-import com.example.fragmentstest.interfaces.EditUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
+import io.reactivex.rxjava3.core.Single
 
-class EditUserUseCase(val myStorage: Storage) : EditUserUseCase {
+class EditUserUseCase(val myStorage: Storage) {
 
-    override fun editUser(position: Int, user: User) {
-        myStorage.editUser(user)
+    fun editUser(user: User): Single<List<User>> {
+        return myStorage.editUser(user)
     }
 
 }
