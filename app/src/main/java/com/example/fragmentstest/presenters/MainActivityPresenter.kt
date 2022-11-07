@@ -5,6 +5,7 @@ import com.example.fragmentstest.interactors.AddUserUseCase
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.views.MainActivityView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class MainActivityPresenter(
     var displayView: MainActivityView?,
@@ -13,8 +14,10 @@ class MainActivityPresenter(
 
     fun addUser(user: User) {
         Log.d("INFO", "Añadiendo el usuario $user...")
-        AddUserUseCase.addUser(user)
-        displayView?.onCreateUser()
+        AddUserUseCase.addUser(user).observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                displayView?.onCreateUser()
+            }
     }
 
 }

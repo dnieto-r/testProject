@@ -1,13 +1,14 @@
 package com.example.fragmentstest.interactors
 
-import com.example.fragmentstest.interfaces.AddUserUseCase
 import com.example.fragmentstest.interfaces.Storage
 import com.example.fragmentstest.models.User
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
-class AddUserUseCase(val myStorage: Storage) : AddUserUseCase {
+class AddUserUseCase(val myStorage: Storage) {
 
-    override fun addUser(user: User) {
-        myStorage.addUser(user)
+    fun addUser(user: User): Completable {
+        return myStorage.addUser(user)
     }
 
 }

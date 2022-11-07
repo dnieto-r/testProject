@@ -53,14 +53,11 @@ class FragmentList : Fragment(), FragmentListView {
     }
 
     override fun setupList() {
-        if (myStorage is AIDLStorage || myStorage is IntentServiceStorage) {
-            myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
-                    customAdapter.usersList = it
-                }
-        } else {
-            customAdapter.usersList = myStorage?.getUsers()
-        }
+        myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
+            .subscribe { it ->
+                customAdapter.usersList = it
+            }
+
 
         rv_users.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -131,13 +128,9 @@ class FragmentList : Fragment(), FragmentListView {
     }
 
     private fun reloadUsers() {
-        if (myStorage is AIDLStorage || myStorage is IntentServiceStorage) {
-            myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
-                    customAdapter.usersList = it
-                }
-        } else {
-            customAdapter.usersList = myStorage?.getUsers()
-        }
+        myStorage.getRxUser().observeOn(AndroidSchedulers.mainThread())
+            .subscribe { it ->
+                customAdapter.usersList = it
+            }
     }
 }

@@ -5,9 +5,13 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.fragmentstest.models.User
 import com.example.fragmentstest.interfaces.Storage
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class LocalDBStorage(
     applicationContext: Context
@@ -16,8 +20,7 @@ class LocalDBStorage(
     private val dbRead = this.readableDatabase
 
     @SuppressLint("Range")
-    override fun getUsers(): MutableList<User> {
-        var usersList: MutableList<User> = emptyList<User>().toMutableList()
+    override fun getRxUser(): Single<List<User>> {
         val projection = arrayOf(
             DBData.COLUMN_NAME_ID,
             DBData.COLUMN_NAME_NAME,
@@ -32,31 +35,37 @@ class LocalDBStorage(
 
         val sortOrder = "${DBData.COLUMN_NAME_ID} DESC"
 
-        dbRead.query(
-            DBData.TABLE_NAME,
-            projection,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            sortOrder
-        ).use {
-            while (it.moveToNext()) {
-                val user: User = User(
-                    it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ID)),
-                    it.getString(it.getColumnIndex(DBData.COLUMN_NAME_NAME)),
-                    it.getString(it.getColumnIndex(DBData.COLUMN_NAME_NUMBER)),
-                    it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ADDRESS)),
-                    it.getInt(it.getColumnIndex(DBData.COLUMN_NAME_PHOTO)).toLong(),
-                    it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ISFAVORITE)).toBoolean()
-                )
-                usersList.add(user)
+        return Single.fromCallable<List<User>>{
+            var usersList: MutableList<User> = emptyList<User>().toMutableList()
+
+            dbRead.query(
+                DBData.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+            ).use {
+                while (it.moveToNext()) {
+                    val user = User(
+                        it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ID)),
+                        it.getString(it.getColumnIndex(DBData.COLUMN_NAME_NAME)),
+                        it.getString(it.getColumnIndex(DBData.COLUMN_NAME_NUMBER)),
+                        it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ADDRESS)),
+                        it.getInt(it.getColumnIndex(DBData.COLUMN_NAME_PHOTO)).toLong(),
+                        it.getString(it.getColumnIndex(DBData.COLUMN_NAME_ISFAVORITE)).toBoolean()
+                    )
+                    usersList.add(user)
+                }
             }
+            usersList
         }
-        return usersList
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun editUser(user: User) {
+    override fun editUser(user: User): Completable {
         val values = ContentValues().apply {
             put(DBData.COLUMN_NAME_ID, user.id)
             put(DBData.COLUMN_NAME_NAME, user.name)
@@ -74,9 +83,10 @@ class LocalDBStorage(
             selection,
             selectionArgs
         )
+        return Completable.complete()
     }
 
-    override fun addUser(user: User) {
+    override fun addUser(user: User): Completable {
         val values = ContentValues().apply {
             put(DBData.COLUMN_NAME_ID, user.id)
             put(DBData.COLUMN_NAME_NAME, user.name)
@@ -87,12 +97,14 @@ class LocalDBStorage(
         }
 
         dbWrite?.insert(DBData.TABLE_NAME, null, values)
+        return Completable.complete()
     }
 
-    override fun removeUser(user: User) {
+    override fun removeUser(user: User): Completable {
         val selection = "${DBData.COLUMN_NAME_ID} LIKE ?"
         val selectionArgs = arrayOf(user.id)
         dbWrite.delete(DBData.TABLE_NAME, selection, selectionArgs)
+        return Completable.complete()
     }
 
     companion object {
@@ -107,10 +119,6 @@ class LocalDBStorage(
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         p0?.execSQL(DBData.SQL_DELETE_ENTRIES)
         onCreate(p0)
-    }
-
-    override fun getRxUser(): Single<List<User>> {
-        return Single.never()
     }
 
 }

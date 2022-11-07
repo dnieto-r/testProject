@@ -5,10 +5,10 @@ import com.example.fragmentstest.models.User
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class EditUserUseCase(val myStorage: Storage) {
+class RemoveUserUseCase(val myStorage: Storage) {
 
-    fun editUser(user: User): Completable {
-        return myStorage.editUser(user)
+    fun removeUser(user: User): Completable {
+        return myStorage.removeUser(user)
     }
 
 }
